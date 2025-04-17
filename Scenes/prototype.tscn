@@ -1,0 +1,196 @@
+[gd_scene load_steps=5 format=3 uid="uid://wtut8q7yoes0"]
+
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="1_6ox75"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_6ox75"]
+sky_material = SubResource("ProceduralSkyMaterial_5hwrp")
+
+[sub_resource type="Environment" id="Environment_4ousu"]
+background_mode = 2
+sky = SubResource("Sky_6ox75")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="prototype" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4ousu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.59821, -0.0550052, -0.79945, -0.383022, 0.895927, 0.224963, 0.703875, 0.440782, -0.55702, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Door_Wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 2.5, -0.0999966)
+use_collision = true
+size = Vector3(1, 4, 94)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D/Door_Wall"]
+transform = Transform3D(-1.31134e-07, 1.2, 0, -3, -5.24537e-08, 0, 0, 0, 1, -0.299999, -1.6, 0)
+operation = 2
+radius = 1.1
+height = 1.5
+
+[node name="Wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, -47.6)
+use_collision = true
+size = Vector3(94, 4, 1)
+
+[node name="Wall1" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 2.5, -0.1)
+use_collision = true
+size = Vector3(1, 4, 94)
+
+[node name="Wall2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, 47.43)
+use_collision = true
+size = Vector3(94, 4, 1)
+
+[node name="Obstacle" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 4.32, 0, 2, -23.4)
+use_collision = true
+size = Vector3(10, 3, 0.8)
+
+[node name="Obstacle4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.3, 0, 0, 0, 0.512, 0, 0, 0, 4.32, 3.47, 1.27, -26.86)
+use_collision = true
+size = Vector3(10, 3, 0.8)
+
+[node name="Obstacle5" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.3, 0, 0, 0, 0.512, 0, 0, 0, 4.32, 18.95, 1.27, 26.64)
+use_collision = true
+size = Vector3(10, 3, 0.8)
+
+[node name="Obstacle2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(4.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 24.5)
+use_collision = true
+size = Vector3(10, 3, 0.8)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D/Obstacle2"]
+transform = Transform3D(3.04, 0, 0, 0, 2.98023e-08, -12.144, 0, 1, 3.61919e-07, 0, 0, 0)
+operation = 2
+
+[node name="Obstacle3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1.73645e-07, 0, -1, 0, 1, 0, 2.3, 0, 7.54979e-08, 26.5, 2.02031, -12.5)
+use_collision = true
+size = Vector3(10, 3, 0.8)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D/Obstacle3"]
+transform = Transform3D(-1.8, 1.58999e-07, -2.7325e-14, 0, -4.60281e-08, -4.14, -2.71792e-07, -1.053, 1.80965e-07, 4.39131, 1.3, 0.000890732)
+operation = 2
+height = 1.0
+
+[node name="Rock" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.39, 0.46, -32.62)
+radius = 7.8
+smooth_faces = false
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D/Rock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 7.9)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="CSGCombiner3D/Rock"]
+transform = Transform3D(1.2, 0, 0, 0, 1.512, 0, 0, 0, 0.98, 3, -0.9, 5.2)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="CSGCombiner3D/Rock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
+radius = 4.2
+smooth_faces = false
+
+[node name="Rock2" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.39608, 0, 0.918216, 0, 1, 0, -0.918216, 0, 0.39608, -21.39, 0.46, 25.81)
+radius = 7.8
+smooth_faces = false
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D/Rock2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 7.9)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="CSGCombiner3D/Rock2"]
+transform = Transform3D(1.2, 0, 0, 0, 1.512, 0, 0, 0, 0.98, 3, -0.9, 5.2)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="CSGCombiner3D/Rock2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
+radius = 4.2
+smooth_faces = false
+
+[node name="Rock3" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(-0.116093, 0, -0.993238, 0, 1, 0, 0.993238, 0, -0.116093, 42.94, 0.46, 25.81)
+radius = 7.8
+smooth_faces = false
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D/Rock3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 7.9)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="CSGCombiner3D/Rock3"]
+transform = Transform3D(1.2, 0, 0, 0, 1.512, 0, 0, 0, 0.98, 3, -0.9, 5.2)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="CSGCombiner3D/Rock3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
+radius = 4.2
+smooth_faces = false
+
+[node name="Rock4" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(-0.116093, 0, -0.993238, 0, 1, 0, 0.993238, 0, -0.116093, 42.94, 0.46, -40.55)
+radius = 7.8
+smooth_faces = false
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D/Rock4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 7.9)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="CSGCombiner3D/Rock4"]
+transform = Transform3D(1.2, 0, 0, 0, 1.512, 0, 0, 0, 0.98, 3, -0.9, 5.2)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="CSGCombiner3D/Rock4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
+radius = 4.2
+smooth_faces = false
+
+[node name="Rock5" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(-0.116093, 0, -0.993238, 0, 1.8, 0, 0.993238, 0, -0.116093, 33.95, 0.46, -44.08)
+radius = 7.8
+smooth_faces = false
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D/Rock5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 7.9)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="CSGCombiner3D/Rock5"]
+transform = Transform3D(1.2, 0, 0, 0, 1.512, 0, 0, 0, 0.98, 3, -0.9, 5.2)
+radius = 4.2
+smooth_faces = false
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="CSGCombiner3D/Rock5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
+radius = 4.2
+smooth_faces = false
+
+[node name="ProtoController" parent="." instance=ExtResource("1_6ox75")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.2, 0.5, 0)
+jump_velocity = 6.0
