@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://cu27isnkhug1"]
+
+[ext_resource type="Script" uid="uid://bq7ju7r4po8jm" path="res://Scenes/Dragon/dragon.gd" id="1_pf1ax"]
+[ext_resource type="PackedScene" uid="uid://bsh8onlielsai" path="res://Assets/Models/Dragon/dragon.glb" id="1_wnw28"]
+[ext_resource type="Script" uid="uid://dplv806xa1su1" path="res://Scripts/FSM/StateMachine.gd" id="3_yxnyt"]
+[ext_resource type="Script" uid="uid://crbyuagrqjevq" path="res://Scenes/Dragon/DragonChase.gd" id="4_yxnyt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6rxfk"]
+size = Vector3(3.6, 6, 5.3)
+
+[node name="Dragon" type="CharacterBody3D"]
+script = ExtResource("1_pf1ax")
+
+[node name="dragon" parent="." instance=ExtResource("1_wnw28")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="Collision_Base" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, -2.8, 1.15)
+shape = SubResource("BoxShape3D_6rxfk")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = -5.0
+avoidance_enabled = true
+debug_enabled = true
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_yxnyt")
+initial_state = NodePath("ChaseState")
+
+[node name="ChaseState" type="Node" parent="State Machine"]
+script = ExtResource("4_yxnyt")
+
+[editable path="dragon"]
