@@ -1,27 +1,77 @@
-[gd_scene load_steps=6 format=3 uid="uid://cu27isnkhug1"]
+[gd_scene load_steps=12 format=3 uid="uid://cu27isnkhug1"]
 
-[ext_resource type="Script" uid="uid://bq7ju7r4po8jm" path="res://Scenes/Dragon/dragon.gd" id="1_pf1ax"]
+[ext_resource type="Script" uid="uid://bq7ju7r4po8jm" path="res://Scripts/Dragon/dragon.gd" id="1_pf1ax"]
 [ext_resource type="PackedScene" uid="uid://bsh8onlielsai" path="res://Assets/Models/Dragon/dragon.glb" id="1_wnw28"]
 [ext_resource type="Script" uid="uid://dplv806xa1su1" path="res://Scripts/FSM/StateMachine.gd" id="3_yxnyt"]
-[ext_resource type="Script" uid="uid://crbyuagrqjevq" path="res://Scenes/Dragon/DragonChase.gd" id="4_yxnyt"]
+[ext_resource type="Script" uid="uid://crbyuagrqjevq" path="res://Scripts/Dragon/DragonChase.gd" id="4_yxnyt"]
+[ext_resource type="Script" uid="uid://dqj5j4ychsvkb" path="res://Scenes/Dragon/DragonFly.gd" id="5_pnv5d"]
+[ext_resource type="Script" uid="uid://cemqgo3dgaxol" path="res://Scenes/Dragon/DragonFireBreath.gd" id="6_gbppr"]
+[ext_resource type="Script" uid="uid://c4oc44ke0tqmm" path="res://Scenes/Dragon/DragonCharge.gd" id="7_mswqv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6rxfk"]
-size = Vector3(3.6, 6, 5.3)
+size = Vector3(3.6, 5.8, 6)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mswqv"]
+direction = Vector3(0, -1, 0)
+spread = 4.0
+initial_velocity_min = 32.0
+initial_velocity_max = 128.0
+gravity = Vector3(0, -1, 0)
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_use_scale = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yfema"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.960784, 0.494118, 0, 1)
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_20pkq"]
+material = SubResource("StandardMaterial3D_yfema")
 
 [node name="Dragon" type="CharacterBody3D"]
 script = ExtResource("1_pf1ax")
 
 [node name="dragon" parent="." instance=ExtResource("1_wnw28")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 5.8, -2)
 
 [node name="Collision_Base" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, -2.8, 1.15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -0.25)
 shape = SubResource("BoxShape3D_6rxfk")
 
+[node name="Vision_RayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 1, 0)
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_height_offset = -5.0
+path_height_offset = 1.0
 avoidance_enabled = true
-debug_enabled = true
+debug_path_custom_color = Color(1, 1, 0, 1)
+
+[node name="FireParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.8, 5.55)
+amount = 512
+lifetime = 2.0
+randomness = 1.0
+visibility_aabb = AABB(-4, -40, -2, 8, 40, 8)
+process_material = SubResource("ParticleProcessMaterial_mswqv")
+draw_pass_1 = SubResource("QuadMesh_20pkq")
+
+[node name="CD_FireBreath" type="Timer" parent="."]
+one_shot = true
+
+[node name="FlyPause_Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="FireBreath_Timer" type="Timer" parent="."]
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_yxnyt")
@@ -30,4 +80,13 @@ initial_state = NodePath("ChaseState")
 [node name="ChaseState" type="Node" parent="State Machine"]
 script = ExtResource("4_yxnyt")
 
-[editable path="dragon"]
+[node name="FlyState" type="Node" parent="State Machine"]
+script = ExtResource("5_pnv5d")
+
+[node name="MeleeAttackState" type="Node" parent="State Machine"]
+
+[node name="FireBreathState" type="Node" parent="State Machine"]
+script = ExtResource("6_gbppr")
+
+[node name="ChargeState" type="Node" parent="State Machine"]
+script = ExtResource("7_mswqv")

@@ -36,6 +36,10 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.71, 1.31, 48.8)
 jump_velocity = 6.0
 
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, -1.21514, 0.4)
+size = Vector3(100, 5, 100)
+
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, 0.8, 0.4)
 navigation_mesh = SubResource("NavigationMesh_4ousu")
@@ -209,4 +213,4 @@ radius = 4.2
 smooth_faces = false
 
 [node name="Dragon" parent="NavigationRegion3D" instance=ExtResource("2_4ousu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 6.2, -3.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 0.48, -3.4)
