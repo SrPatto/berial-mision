@@ -1,9 +1,13 @@
 extends CharacterBody3D
 
+@export_group("Movement")
+@export var SPEED = 10.0
+@export var JUMP_VELOCITY = 6
+@export var sens := .1
 
-const SPEED = 10.0
-const JUMP_VELOCITY = 6
-var sens := .1
+@export_group("Combat")
+@export var health = 100
+@export var stamina = 50
 
 @onready var cam = $pivot
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cu27isnkhug1"]
+[gd_scene load_steps=13 format=3 uid="uid://cu27isnkhug1"]
 
 [ext_resource type="Script" uid="uid://bq7ju7r4po8jm" path="res://Scripts/Dragon/dragon.gd" id="1_pf1ax"]
 [ext_resource type="PackedScene" uid="uid://bsh8onlielsai" path="res://Assets/Models/Dragon/dragon.glb" id="1_wnw28"]
@@ -36,6 +36,10 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_20pkq"]
 material = SubResource("StandardMaterial3D_yfema")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mswqv"]
+radius = 1.02771
+height = 35.768
+
 [node name="Dragon" type="CharacterBody3D"]
 script = ExtResource("1_pf1ax")
 
@@ -56,16 +60,23 @@ avoidance_enabled = true
 debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="FireParticles" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.8, 5.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5.55)
 emitting = false
 amount = 512
 lifetime = 2.0
 randomness = 1.0
-visibility_aabb = AABB(-4, -40, -2, 8, 40, 8)
+visibility_aabb = AABB(-4, -40, -4, 8, 40, 8)
 process_material = SubResource("ParticleProcessMaterial_mswqv")
 draw_pass_1 = SubResource("QuadMesh_20pkq")
 
+[node name="FireBreath_Hitbox" type="Area3D" parent="FireParticles"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FireParticles/FireBreath_Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.4991, 0)
+shape = SubResource("CapsuleShape3D_mswqv")
+
 [node name="CD_FireBreath" type="Timer" parent="."]
+wait_time = 10.0
 one_shot = true
 
 [node name="FlyPause_Timer" type="Timer" parent="."]
@@ -73,6 +84,11 @@ wait_time = 3.0
 one_shot = true
 
 [node name="FireBreath_Timer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
+[node name="FireDamage_Timer" type="Timer" parent="."]
+wait_time = 0.2
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_yxnyt")
@@ -91,3 +107,6 @@ script = ExtResource("6_gbppr")
 
 [node name="ChargeState" type="Node" parent="State Machine"]
 script = ExtResource("7_mswqv")
+
+[connection signal="timeout" from="FireBreath_Timer" to="State Machine/FireBreathState" method="_on_fire_breath_timer_timeout"]
+[connection signal="timeout" from="FireDamage_Timer" to="State Machine/FireBreathState" method="_on_fire_damage_timer_timeout"]
