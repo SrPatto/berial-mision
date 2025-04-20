@@ -1,8 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://wtut8q7yoes0"]
 
-[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="1_6ox75"]
+[ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
 [ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="2_4ousu"]
-[ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Assets/player.tscn" id="1_6ox75"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -32,10 +31,6 @@ environment = SubResource("Environment_4ousu")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.59821, -0.0550052, -0.79945, -0.383022, 0.895927, 0.224963, 0.703875, 0.440782, -0.55702, 0, 0, 0)
 shadow_enabled = true
-
-[node name="ProtoController" parent="." instance=ExtResource("1_6ox75")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.71, 1.31, 48.8)
-jump_velocity = 6.0
 
 [node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, -1.21514, 0.4)
@@ -215,5 +210,6 @@ smooth_faces = false
 
 [node name="Dragon" parent="NavigationRegion3D" instance=ExtResource("2_4ousu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 0.48, -3.4)
+
 [node name="Player" parent="." instance=ExtResource("1_6ox75")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79105, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.5542, 2.33258, 47.5394)

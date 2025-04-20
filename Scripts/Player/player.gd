@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+const SPEED = 10.0
+const JUMP_VELOCITY = 6
 var sens := .1
 
 @onready var cam = $pivot
