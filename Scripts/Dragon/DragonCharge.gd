@@ -10,7 +10,7 @@ func Enter():
 	fly_pause_timer.wait_time = 1
 	isCharging = false
 	player_lastPosition = player.global_position
-	player_lastPosition += Vector3(17, 0, 0)
+	player_lastPosition += Vector3(17, -0.8, 0)
 	fly_pause_timer.start()
 	print("COBARDEEEEEEEEEEEES!!")
 	

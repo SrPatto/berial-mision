@@ -4,7 +4,6 @@ func Enter():
 	player = get_tree().get_first_node_in_group("Player")
 	dragon = $"../.."
 	navigation_agent_3d = $"../../NavigationAgent3D"
-	vision_ray_cast = $"../../Vision_RayCast"
 	cd_fire_breath = $"../../CD_FireBreath"
 	
 	dragon.isFlying = false
@@ -23,8 +22,7 @@ func Update(_delta: float):
 		Transitioned.emit(self, "FlyState")
 
 func Physics_Update(_delta: float):
-	vision_ray_cast.target_position = vision_ray_cast.to_local(player.global_position) 
-	
+	pass
 
 func player_distant(): 
 	return dragon.global_position.distance_to(player.global_position)

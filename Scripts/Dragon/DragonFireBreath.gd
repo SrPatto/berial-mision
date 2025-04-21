@@ -13,7 +13,7 @@ func Enter():
 	dragon = $"../.."
 	cd_fire_breath = $"../../CD_FireBreath"
 	fly_pause_timer = $"../../FlyPause_Timer"
-	vision_ray_cast = $"../../Vision_RayCast"
+	fire_ray_cast = $"../../Fire_RayCast"
 	
 	isAttacking = true
 	fire_particles.emitting = true
@@ -55,6 +55,9 @@ func Physics_Update(_delta: float):
 		var targetPos2d : Vector2 = Vector2(player.global_position.x, player.global_position.z)
 		direction = -(pos2D - targetPos2d)
 		dragon.rotation.y = lerp_angle(dragon.rotation.y, atan2(direction.x, direction.y), _delta * 2)
+		# raycast
+		fire_ray_cast.target_position = fire_ray_cast.to_local(player.global_position)
+		
 		
 	
 
@@ -78,6 +81,11 @@ func _on_fire_breath_timer_timeout():
 
 # Damage per second
 func _on_fire_damage_timer_timeout():
-	if fire_breath_hitbox.overlaps_body(player):
-		player.health -= FIRE_DAMAGE
+	if dragon.isFlying:
+		if fire_breath_hitbox.overlaps_body(player):
+			player.health -= FIRE_DAMAGE
 		print(player.health)
+	else:
+		if fire_breath_hitbox.overlaps_body(player) && fire_ray_cast.get_collider() == player:
+			player.health -= FIRE_DAMAGE
+			print(player.health)

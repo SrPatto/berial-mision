@@ -64,20 +64,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, -47.6)
 use_collision = true
 size = Vector3(94, 4, 1)
 
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="NavigationRegion3D/CSGCombiner3D/Wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.497287, 0.0551095, 0.562737)
+size = Vector3(93.2369, 3.98187, 2)
+
 [node name="Wall1" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 2.5, -0.1)
 use_collision = true
 size = Vector3(1, 4, 94)
+
+[node name="GPUParticlesCollisionBox3D2" type="GPUParticlesCollisionBox3D" parent="NavigationRegion3D/CSGCombiner3D/Wall1"]
+transform = Transform3D(-0.000855232, 0, -1, 0, 1, 0, 1, 0, -0.000855232, 0, 0, 0)
+size = Vector3(93.8866, 4, 1)
 
 [node name="Wall2" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, 47.43)
 use_collision = true
 size = Vector3(94, 4, 1)
 
+[node name="GPUParticlesCollisionBox3D2" type="GPUParticlesCollisionBox3D" parent="NavigationRegion3D/CSGCombiner3D/Wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52588, -0.00678396, 0.490952)
+size = Vector3(93.2369, 3.98187, 2)
+
 [node name="Obstacle" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 4.32, 0, 2, -23.4)
 use_collision = true
 size = Vector3(10, 3, 0.8)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="NavigationRegion3D/CSGCombiner3D/Obstacle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00012213, -0.00326538, -0.000259399)
+size = Vector3(9.9895, 3.02191, 0.791595)
 
 [node name="Obstacle4" type="CSGBox3D" parent="NavigationRegion3D/CSGCombiner3D"]
 transform = Transform3D(0.3, 0, 0, 0, 0.512, 0, 0, 0, 4.32, 3.47, 1.27, -26.86)
@@ -212,4 +228,4 @@ smooth_faces = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 0.48, -3.4)
 
 [node name="Player" parent="." instance=ExtResource("1_6ox75")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.5542, 2.33258, 47.5394)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.554, 2.3, 47.539)
