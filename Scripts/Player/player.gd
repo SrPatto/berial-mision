@@ -1,19 +1,26 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
-var sens := .1
-var hp: float = 10
+const BULLET_SCENE: PackedScene = preload("res://Scenes/Player/bullet.tscn") # Escena de bala, debe ser una constante
 
-@export var bullet: PackedScene
+@export_group("Movement")
+@export var SPEED = 10.0
+@export var JUMP_VELOCITY = 6
+@export var sens := .1
+
+@export_group("Combat")
+@export var health = 100
+@export var stamina = 50
+
 @onready var cam = $pivot
+@onready var shooting_point: Marker3D = $Shooting_Point
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
 
 func _process(delta: float) -> void:
-	if hp <= 0:
+	if health <= 0:
 		queue_free()
+	
 
 func _physics_process(delta: float) -> void:
 	movement(delta)
@@ -45,11 +52,16 @@ func movement(delta:float) -> void: #Movimiento del personaje
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
-func shoot() -> void:
-	var _bullet = bullet.instantiate()
-	_bullet.global_position = $gun.global_position
-	_bullet.direction = (-transform.basis.z).normalized()
-	get_parent().add_child(_bullet)
+func shoot():
+	var bullet = BULLET_SCENE.instantiate() #La escena de la bala 
+	bullet.global_position = shooting_point.global_position
+	bullet.direction = get_direction() 
+	get_node("Bullets").add_child(bullet)
 
 func receive_attack(damage:float) -> void:
-	hp -= damage
+	health -= damage
+
+func get_direction():
+	var direction_x = shooting_point.global_position.x - global_position.x
+	var direction_z = shooting_point.global_position.z - global_position.z
+	return Vector3(direction_x, 0, direction_z)

@@ -13,8 +13,9 @@ height = 1.8
 radius = 0.4
 height = 1.8
 
-[node name="ProtoController" type="CharacterBody3D"]
+[node name="ProtoController" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_ucva2")
+base_speed = 10.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
