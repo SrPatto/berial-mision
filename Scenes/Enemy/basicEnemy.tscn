@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7huoimq03bxo"]
+
+[ext_resource type="Script" uid="uid://qipudkdnm6kp" path="res://Scripts/Enemies/basic_enemy.gd" id="1_schv3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lyrcd"]
+albedo_color = Color(0.701961, 0.0705882, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_schv3"]
+material = SubResource("StandardMaterial3D_lyrcd")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1018e"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_schv3"]
+radius = 3.74268
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1018e"]
+radius = 1.0
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_schv3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_schv3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1018e")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_schv3")
+
+[node name="AreaAttack" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaAttack"]
+shape = SubResource("CylinderShape3D_1018e")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="AreaAttack" to="." method="_on_area_attack_body_entered"]
+[connection signal="body_exited" from="AreaAttack" to="." method="_on_area_attack_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
