@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=6 format=3 uid="uid://wtut8q7yoes0"]
 
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Assets/player.tscn" id="1_6ox75"]
+[ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/basicEnemy.tscn" id="2_4ousu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -16,6 +17,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="prototype" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4ousu")
@@ -193,3 +195,21 @@ smooth_faces = false
 
 [node name="Player" parent="." instance=ExtResource("1_6ox75")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79105, 0)
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_4ousu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99074, 2.34072, -2.99413)
+hp = 3.0
+damage = 10.0
+speed = 50.0
+
+[node name="CharacterBody3D3" parent="." instance=ExtResource("2_4ousu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3322, 2.34072, 3.08829)
+hp = 3.0
+damage = 10.0
+speed = 50.0
+
+[node name="CharacterBody3D2" parent="." instance=ExtResource("2_4ousu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99074, 2.34072, 8.93416)
+hp = 3.0
+damage = 10.0
+speed = 50.0
