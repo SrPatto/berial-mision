@@ -1,27 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0g5xgxk8kwop"]
+[gd_scene load_steps=4 format=3 uid="uid://b0g5xgxk8kwop"]
 
 [ext_resource type="Script" uid="uid://d040bwgh0awoa" path="res://Scripts/Player/Bullet.gd" id="1_eoc3h"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_4mw4s"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_xjght"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_oduel"]
 radius = 0.600401
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[sub_resource type="SphereMesh" id="SphereMesh_4mw4s"]
+
+[node name="Bullet" type="Area3D"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 script = ExtResource("1_eoc3h")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_oduel")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_4mw4s")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_xjght")
-
-[node name="Area3D" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_oduel")
-
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
