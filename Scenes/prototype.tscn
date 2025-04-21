@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=7 format=3 uid="uid://wtut8q7yoes0"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Dragon/dragon.tscn" id="1_6koui"]
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
 
@@ -224,8 +223,6 @@ smooth_faces = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
 radius = 4.2
 smooth_faces = false
-
-[node name="Dragon" parent="NavigationRegion3D" instance=ExtResource("1_6koui")]
 
 [node name="Player" parent="." instance=ExtResource("1_6ox75")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.554, 2.3, 47.539)

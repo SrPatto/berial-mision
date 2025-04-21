@@ -12,7 +12,7 @@ const BULLET_SCENE: PackedScene = preload("res://Scenes/Player/bullet.tscn") # E
 @export var stamina = 50
 
 @onready var cam = $pivot
-@onready var shooting_point: Marker3D = $Shooting_Point
+@onready var shooting_point: Marker3D = $ShootingPoint
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
@@ -55,13 +55,8 @@ func movement(delta:float) -> void: #Movimiento del personaje
 func shoot():
 	var bullet = BULLET_SCENE.instantiate() #La escena de la bala 
 	bullet.global_position = shooting_point.global_position
-	bullet.direction = get_direction() 
-	get_node("Bullets").add_child(bullet)
+	bullet.direction = (-transform.basis.z).normalized()
+	get_parent().add_child(bullet)
 
 func receive_attack(damage:float) -> void:
 	health -= damage
-
-func get_direction():
-	var direction_x = shooting_point.global_position.x - global_position.x
-	var direction_z = shooting_point.global_position.z - global_position.z
-	return Vector3(direction_x, 0, direction_z)
