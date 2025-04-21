@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b0g5xgxk8kwop"]
 
-[ext_resource type="Script" uid="uid://d040bwgh0awoa" path="res://Scripts/Bullet.gd" id="1_xjght"]
+[ext_resource type="Script" uid="uid://d040bwgh0awoa" path="res://Scripts/Player/Bullet.gd" id="1_eoc3h"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4mw4s"]
 
@@ -11,7 +11,7 @@ radius = 0.600401
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-script = ExtResource("1_xjght")
+script = ExtResource("1_eoc3h")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_4mw4s")

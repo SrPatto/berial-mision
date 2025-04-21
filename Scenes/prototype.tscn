@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://wtut8q7yoes0"]
 
-[ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Assets/player.tscn" id="1_6ox75"]
-[ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/basicEnemy.tscn" id="2_4ousu"]
+[ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
+[ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
