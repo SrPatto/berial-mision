@@ -3,6 +3,7 @@ extends State
 class_name State_Dragon
 
 const MELEE_RANGE = 8
+const FIRE_BREATH_RANGE = 16
 const MAX_DISTANCE = 32
 
 const FIRE_DAMAGE = 2

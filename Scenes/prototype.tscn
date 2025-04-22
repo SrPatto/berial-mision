@@ -1,11 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=10 format=3 uid="uid://wtut8q7yoes0"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Dragon/dragon.tscn" id="1_6koui"]
+[ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="1_6koui"]
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
-[ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="2_4ousu"]
-[gd_scene load_steps=6 format=3 uid="uid://wtut8q7yoes0"]
-
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
+[ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="4_3mrnv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -27,6 +25,9 @@ agent_radius = 3.0
 agent_max_climb = 0.2
 agent_max_slope = 60.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6koui"]
+size = Vector3(1.79591, 0.306396, 1.7738)
+
 [node name="prototype" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -37,11 +38,9 @@ transform = Transform3D(-0.59821, -0.0550052, -0.79945, -0.383022, 0.895927, 0.2
 shadow_enabled = true
 
 [node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, -1.21514, 0.4)
 size = Vector3(100, 5, 100)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, 0.8, 0.4)
 navigation_mesh = SubResource("NavigationMesh_4ousu")
 
 [node name="Floor" type="CSGBox3D" parent="NavigationRegion3D"]
@@ -250,3 +249,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99074, 2.34072, 8.93416)
 hp = 3.0
 damage = 10.0
 speed = 50.0
+
+[node name="BattleZone" type="Area3D" parent="."]
+script = ExtResource("4_3mrnv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BattleZone"]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 7, 0)
+shape = SubResource("BoxShape3D_6koui")
+debug_fill = false
+
+[connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]

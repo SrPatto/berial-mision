@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cu27isnkhug1"]
+[gd_scene load_steps=18 format=3 uid="uid://cu27isnkhug1"]
 
 [ext_resource type="Script" uid="uid://bq7ju7r4po8jm" path="res://Scripts/Dragon/dragon.gd" id="1_pf1ax"]
 [ext_resource type="PackedScene" uid="uid://bsh8onlielsai" path="res://Assets/Models/Dragon/dragon.glb" id="1_wnw28"]
@@ -6,7 +6,10 @@
 [ext_resource type="Script" uid="uid://crbyuagrqjevq" path="res://Scripts/Dragon/DragonChase.gd" id="4_yxnyt"]
 [ext_resource type="Script" uid="uid://dqj5j4ychsvkb" path="res://Scripts/Dragon/DragonFly.gd" id="5_pnv5d"]
 [ext_resource type="Script" uid="uid://cemqgo3dgaxol" path="res://Scripts/Dragon/DragonFireBreath.gd" id="6_gbppr"]
+[ext_resource type="Script" uid="uid://cbfv5rrnju46y" path="res://Scripts/Dragon/DragonMeleeAttack.gd" id="6_yfema"]
 [ext_resource type="Script" uid="uid://c4oc44ke0tqmm" path="res://Scripts/Dragon/DragonCharge.gd" id="7_mswqv"]
+[ext_resource type="Script" uid="uid://cyfbanpu4e6p8" path="res://Scripts/Dragon/DragonIdle.gd" id="9_20pkq"]
+[ext_resource type="PackedScene" uid="uid://bj3cgi2csord" path="res://addons/VFX/Scenes/VFX_puff_big.tscn" id="10_3mh7l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6rxfk"]
 size = Vector3(3.6, 5.8, 6)
@@ -14,9 +17,9 @@ size = Vector3(3.6, 5.8, 6)
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mswqv"]
 direction = Vector3(0, -1, 0)
 spread = 4.0
-initial_velocity_min = 10.0
-initial_velocity_max = 20.0
-gravity = Vector3(0, -1, 0)
+initial_velocity_min = 32.0
+initial_velocity_max = 64.0
+gravity = Vector3(0, 0, 0)
 collision_mode = 1
 collision_friction = 1.0
 collision_bounce = 0.0
@@ -40,8 +43,37 @@ material = SubResource("StandardMaterial3D_yfema")
 radius = 1.02771
 height = 35.768
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_20pkq"]
+radius = 8.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3mh7l"]
+height = 12.0
+radius = 12.0
+
 [node name="Dragon" type="CharacterBody3D"]
 script = ExtResource("1_pf1ax")
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_yxnyt")
+initial_state = NodePath("IdleState")
+
+[node name="ChaseState" type="Node" parent="State Machine"]
+script = ExtResource("4_yxnyt")
+
+[node name="FlyState" type="Node" parent="State Machine"]
+script = ExtResource("5_pnv5d")
+
+[node name="MeleeAttackState" type="Node" parent="State Machine"]
+script = ExtResource("6_yfema")
+
+[node name="FireBreathState" type="Node" parent="State Machine"]
+script = ExtResource("6_gbppr")
+
+[node name="ChargeState" type="Node" parent="State Machine"]
+script = ExtResource("7_mswqv")
+
+[node name="IdleState" type="Node" parent="State Machine"]
+script = ExtResource("9_20pkq")
 
 [node name="dragon" parent="." instance=ExtResource("1_wnw28")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 5.8, -2)
@@ -60,10 +92,10 @@ avoidance_enabled = true
 debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="FireParticles" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3, 5.55)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3, 6)
 emitting = false
 amount = 512
-lifetime = 2.0
+lifetime = 0.6
 randomness = 1.0
 visibility_aabb = AABB(-4, -40, -4, 8, 40, 8)
 process_material = SubResource("ParticleProcessMaterial_mswqv")
@@ -72,11 +104,26 @@ draw_pass_1 = SubResource("QuadMesh_20pkq")
 [node name="FireBreath_Hitbox" type="Area3D" parent="FireParticles"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FireParticles/FireBreath_Hitbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -18.4991, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19, -1.5)
 shape = SubResource("CapsuleShape3D_mswqv")
 
+[node name="MeleeAttack_Hitbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack_Hitbox"]
+shape = SubResource("SphereShape3D_20pkq")
+
+[node name="ImpactZone_Hitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ImpactZone_Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.35, 0)
+shape = SubResource("CylinderShape3D_3mh7l")
+
+[node name="HIT VFX" parent="." instance=ExtResource("10_3mh7l")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
 [node name="CD_FireBreath" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 16.0
 one_shot = true
 
 [node name="FlyPause_Timer" type="Timer" parent="."]
@@ -90,23 +137,7 @@ one_shot = true
 [node name="FireDamage_Timer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("3_yxnyt")
-initial_state = NodePath("ChaseState")
-
-[node name="ChaseState" type="Node" parent="State Machine"]
-script = ExtResource("4_yxnyt")
-
-[node name="FlyState" type="Node" parent="State Machine"]
-script = ExtResource("5_pnv5d")
-
-[node name="MeleeAttackState" type="Node" parent="State Machine"]
-
-[node name="FireBreathState" type="Node" parent="State Machine"]
-script = ExtResource("6_gbppr")
-
-[node name="ChargeState" type="Node" parent="State Machine"]
-script = ExtResource("7_mswqv")
-
 [connection signal="timeout" from="FireBreath_Timer" to="State Machine/FireBreathState" method="_on_fire_breath_timer_timeout"]
 [connection signal="timeout" from="FireDamage_Timer" to="State Machine/FireBreathState" method="_on_fire_damage_timer_timeout"]
+
+[editable path="HIT VFX"]

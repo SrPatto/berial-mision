@@ -19,7 +19,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if health <= 0:
-		queue_free()
+		# todo: muerte del jugador
+		pass
 	
 
 func _physics_process(delta: float) -> void:

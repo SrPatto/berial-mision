@@ -28,8 +28,8 @@ func Enter():
 		fly_pause_timer.start()
 	else:
 		fire_breath_timer.start()
-		fire_particles.position.y = 2
-		fire_particles.rotation.x = 55.0 
+		fire_particles.position.y = 3
+		fire_particles.rotation.x = 55.01 
 	
 func Exit():
 	pass
@@ -47,7 +47,6 @@ func Physics_Update(_delta: float):
 			dragon.velocity = Vector3.ZERO
 		else:
 			dragon.velocity = direction * fly_speed * _delta
-		
 	else:
 		dragon.velocity = Vector3.ZERO
 		# Smooth look_at

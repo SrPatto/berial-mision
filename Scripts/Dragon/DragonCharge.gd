@@ -1,5 +1,6 @@
 extends State_Dragon
 
+@onready var impact_zone_hitbox: Area3D = $"../../ImpactZone_Hitbox"
 var isCharging
 
 func Enter():
@@ -10,7 +11,7 @@ func Enter():
 	fly_pause_timer.wait_time = 1
 	isCharging = false
 	player_lastPosition = player.global_position
-	player_lastPosition += Vector3(17, -0.8, 0)
+	player_lastPosition += Vector3(0, -0.8, 0)
 	fly_pause_timer.start()
 	print("COBARDEEEEEEEEEEEES!!")
 	
@@ -23,6 +24,10 @@ func Update(_delta: float):
 		var charge_tween = get_tree().create_tween()
 		charge_tween.tween_property(dragon, "position", player_lastPosition, .5)
 		charge_tween.tween_callback(func (): 
+			$"../../HIT VFX/AnimationPlayer".play()
+			if impact_zone_hitbox.overlaps_body(player):
+				player.health -= CHARGE_DAMAGE
+				print("IMPACT! player: ", player.health)
 			fly_pause_timer.wait_time = 3
 			dragon.isFlying = false
 			Transitioned.emit(self, "ChaseState"))

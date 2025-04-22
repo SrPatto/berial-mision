@@ -15,8 +15,8 @@ func Exit():
 func Update(_delta: float):
 	Make_Path(player.global_position, _delta)
 	if player_distant() < MELEE_RANGE:
-		print("SAPE")
-	elif player_distant() > MELEE_RANGE && player_distant() < MAX_DISTANCE && cd_fire_breath.is_stopped():
+		Transitioned.emit(self, "MeleeAttackState")
+	elif player_distant() >= FIRE_BREATH_RANGE && player_distant() < MAX_DISTANCE && cd_fire_breath.is_stopped():
 		Transitioned.emit(self, "FireBreathState")
 	elif player_distant() > MAX_DISTANCE:
 		Transitioned.emit(self, "FlyState")
