@@ -6,15 +6,14 @@ var next_attack
 var isMaxHeigth = false
 
 func Enter():
-	player = get_tree().get_first_node_in_group("Player")
-	dragon = $"../.."
-	fly_pause_timer = $"../../FlyPause_Timer"
+	get_variables()
 	
 	isMaxHeigth = false
 	dragon.velocity = Vector3.ZERO
 	dragon.isFlying = true
 	
 	next_attack = randi_range(1,2)
+	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["WINGS"])
 
 func Exit():
 	pass

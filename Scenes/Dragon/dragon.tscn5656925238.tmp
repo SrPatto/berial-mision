@@ -93,11 +93,34 @@ radius = 12.0
 [node name="Dragon" type="CharacterBody3D"]
 script = ExtResource("1_pf1ax")
 
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_yxnyt")
+initial_state = NodePath("IdleState")
+
+[node name="ChaseState" type="Node" parent="State Machine"]
+script = ExtResource("4_yxnyt")
+
+[node name="FlyState" type="Node" parent="State Machine"]
+script = ExtResource("5_pnv5d")
+
+[node name="MeleeAttackState" type="Node" parent="State Machine"]
+script = ExtResource("6_yfema")
+
+[node name="FireBreathState" type="Node" parent="State Machine"]
+script = ExtResource("6_gbppr")
+
+[node name="ChargeState" type="Node" parent="State Machine"]
+script = ExtResource("7_mswqv")
+
+[node name="IdleState" type="Node" parent="State Machine"]
+script = ExtResource("9_20pkq")
+
 [node name="dragon" parent="." instance=ExtResource("1_wnw28")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 5.8, -2)
 
 [node name="Collision_Base" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -0.25)
+visible = false
 shape = SubResource("BoxShape3D_6rxfk")
 
 [node name="Fire_RayCast" type="RayCast3D" parent="."]
@@ -111,6 +134,7 @@ debug_path_custom_color = Color(1, 1, 0, 1)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = SubResource("AudioStreamInteractive_4wp0e")
+volume_db = 80.0
 autoplay = true
 playback_type = 1
 script = ExtResource("19_7iwoy")
@@ -132,12 +156,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19, -1.5)
 shape = SubResource("CapsuleShape3D_mswqv")
 
 [node name="MeleeAttack_Hitbox" type="Area3D" parent="."]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack_Hitbox"]
 shape = SubResource("SphereShape3D_20pkq")
 
 [node name="ImpactZone_Hitbox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ImpactZone_Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.35, 0)
@@ -160,28 +186,6 @@ one_shot = true
 
 [node name="FireDamage_Timer" type="Timer" parent="."]
 wait_time = 0.1
-
-[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("3_yxnyt")
-initial_state = NodePath("IdleState")
-
-[node name="ChaseState" type="Node" parent="State Machine"]
-script = ExtResource("4_yxnyt")
-
-[node name="FlyState" type="Node" parent="State Machine"]
-script = ExtResource("5_pnv5d")
-
-[node name="MeleeAttackState" type="Node" parent="State Machine"]
-script = ExtResource("6_yfema")
-
-[node name="FireBreathState" type="Node" parent="State Machine"]
-script = ExtResource("6_gbppr")
-
-[node name="ChargeState" type="Node" parent="State Machine"]
-script = ExtResource("7_mswqv")
-
-[node name="IdleState" type="Node" parent="State Machine"]
-script = ExtResource("9_20pkq")
 
 [connection signal="timeout" from="FireBreath_Timer" to="State Machine/FireBreathState" method="_on_fire_breath_timer_timeout"]
 [connection signal="timeout" from="FireDamage_Timer" to="State Machine/FireBreathState" method="_on_fire_damage_timer_timeout"]

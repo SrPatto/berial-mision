@@ -7,11 +7,11 @@ var isAttacking
 
 func Enter():
 	print("SAPE")
-	player = get_tree().get_first_node_in_group("Player")
-	dragon = $"../.."
+	get_variables()
 	
 	dragon.velocity = Vector3.ZERO
 	isAttacking = true
+	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["ATTACK"])
 	if isAttacking:
 		attack()
 	cd_attack_time = 2 # TEMPORAL

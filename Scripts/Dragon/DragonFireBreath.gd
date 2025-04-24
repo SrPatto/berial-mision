@@ -7,26 +7,26 @@ extends State_Dragon
 
 var direction
 var isAttacking 
+var currentSFX
 
 func Enter():
-	player = get_tree().get_first_node_in_group("Player")
-	dragon = $"../.."
-	cd_fire_breath = $"../../CD_FireBreath"
-	fly_pause_timer = $"../../FlyPause_Timer"
-	fire_ray_cast = $"../../Fire_RayCast"
+	get_variables()
 	
 	isAttacking = true
 	fire_particles.emitting = true
 	fire_damage_timer.start()
 	
 	if dragon.isFlying:
+		dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["WINGS"])
 		player_lastPosition = player.global_position
 		direction = get_direction()
 		dragon.look_at_from_position(dragon.global_position, Vector3(player_lastPosition.x, dragon.global_position.y, player_lastPosition.z), Vector3.UP, true)
 		fire_particles.position.y = 9.8
 		fire_particles.rotation.x = 0.0
 		fly_pause_timer.start()
+		currentSFX = dragon_sfx.get_currentClip()
 	else:
+		dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["FIREBREATH"])
 		fire_breath_timer.start()
 		fire_particles.position.y = 3
 		fire_particles.rotation.x = 55.01 
@@ -46,6 +46,9 @@ func Physics_Update(_delta: float):
 			stop_fireBreath()
 			dragon.velocity = Vector3.ZERO
 		else:
+			if currentSFX != dragon_sfx.SFX_DICTIONARY["FIREBREATH"]:
+				dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["FIREBREATH"])
+				currentSFX = dragon_sfx.SFX_DICTIONARY["FIREBREATH"]
 			dragon.velocity = direction * fly_speed * _delta
 	else:
 		dragon.velocity = Vector3.ZERO
@@ -56,9 +59,6 @@ func Physics_Update(_delta: float):
 		dragon.rotation.y = lerp_angle(dragon.rotation.y, atan2(direction.x, direction.y), _delta * 2)
 		# raycast
 		fire_ray_cast.target_position = fire_ray_cast.to_local(player.global_position)
-		
-		
-	
 
 func get_direction():
 	var direction_x = player_lastPosition.x - dragon.global_position.x

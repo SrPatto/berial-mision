@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bj3cgi2csord"]
+[gd_scene load_steps=32 format=3 uid="uid://bj3cgi2csord"]
 
 [ext_resource type="Shader" uid="uid://cbctxpf3ajcpc" path="res://addons/VFX/Shaders/s_puff.tres" id="1_p4ear"]
 [ext_resource type="Shader" uid="uid://dgwac6mam38tg" path="res://addons/VFX/Shaders/s_simple1.tres" id="1_s6jba"]
@@ -20,15 +20,6 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_x2pap"]
 texture_mode = 1
 curve = SubResource("Curve_c7hnn")
-
-[sub_resource type="Gradient" id="Gradient_pup3s"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.145299, 0.995726)
-colors = PackedColorArray(0.4, 0.05, 1.2, 1, 0.2, 0.05, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_hevje"]
-gradient = SubResource("Gradient_pup3s")
-use_hdr = true
 
 [sub_resource type="Curve" id="Curve_kdo7j"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -55,7 +46,7 @@ radial_velocity_max = 2.0
 gravity = Vector3(0, 0, 0)
 scale_max = 3.0
 scale_curve = SubResource("CurveTexture_rgrqb")
-color_ramp = SubResource("GradientTexture1D_hevje")
+color = Color(0.223103, 0.223103, 0.223103, 1)
 alpha_curve = SubResource("CurveTexture_x2pap")
 
 [sub_resource type="SphereMesh" id="SphereMesh_ex5j0"]
@@ -189,7 +180,7 @@ _data = {
 [node name="VFX_puff_dissipataion" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_ixvty")
 emitting = false
-amount = 32
+amount = 128
 one_shot = true
 explosiveness = 0.85
 process_material = SubResource("ParticleProcessMaterial_hcf0s")

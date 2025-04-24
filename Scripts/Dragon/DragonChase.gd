@@ -1,12 +1,10 @@
 extends State_Dragon
 
 func Enter():
-	player = get_tree().get_first_node_in_group("Player")
-	dragon = $"../.."
-	navigation_agent_3d = $"../../NavigationAgent3D"
-	cd_fire_breath = $"../../CD_FireBreath"
+	get_variables()
 	
 	dragon.isFlying = false
+	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["FOOTSTEPS"])
 	pass
 	
 func Exit():

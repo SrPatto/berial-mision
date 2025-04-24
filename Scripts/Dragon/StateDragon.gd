@@ -16,11 +16,21 @@ var fire_ray_cast: RayCast3D
 var fly_pause_timer: Timer
 var cd_fire_breath: Timer
 
-
 var player: CharacterBody3D
 var player_direction
 var player_lastPosition
 var dragon: CharacterBody3D
+var dragon_sfx: AudioStreamPlayer3D
+
 var move_speed := 8
 var fly_speed := 24
 var flight_speed := 1000
+
+func get_variables():
+	player = get_tree().get_first_node_in_group("Player")
+	dragon = $"../.."
+	fly_pause_timer = $"../../FlyPause_Timer"
+	dragon_sfx = $"../../AudioStreamPlayer3D"
+	navigation_agent_3d = $"../../NavigationAgent3D"
+	cd_fire_breath = $"../../CD_FireBreath"
+	fire_ray_cast = $"../../Fire_RayCast"
