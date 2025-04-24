@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=8 format=3 uid="uid://wtut8q7yoes0"]
 
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
+[ext_resource type="PackedScene" uid="uid://bkel33em2ur1c" path="res://Scenes/Player/healItem.tscn" id="3_6koui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -250,3 +251,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99074, 2.34072, 8.93416)
 hp = 3.0
 damage = 10.0
 speed = 50.0
+
+[node name="Area3D" parent="." instance=ExtResource("3_6koui")]
+transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -24.6726, 2.0268, 0)
+
+[node name="Area3D2" parent="." instance=ExtResource("3_6koui")]
+transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -16.4698, 2.0268, 11.642)
