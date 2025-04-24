@@ -20,6 +20,7 @@ func attack(body) -> void:
 	body.receive_attack(damage)
 
 func movement(delta: float) -> void:
+	
 	var directionTo = player.global_position - global_position #¿Hacia qué se mueve? Al player
 	var direction = (transform.basis * Vector3(directionTo.x, 0, directionTo.z)).normalized() #Aplica vector de movimiento
 	
@@ -42,7 +43,6 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body.name == "Player":
 		player = null
 
-"""Función para activar el ataque"""
 func _on_area_attack_body_entered(body: Node3D) -> void:
 	if body.name == "Player":
 		attack(body)
@@ -52,7 +52,6 @@ func _on_area_attack_body_exited(body: Node3D) -> void:
 	if body.name == "Player":
 		isAttacking = false
 		$Timer.stop()
-
 
 func _on_timer_timeout() -> void:
 	if isAttacking:
