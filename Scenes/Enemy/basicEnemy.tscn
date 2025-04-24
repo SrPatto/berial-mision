@@ -17,6 +17,8 @@ radius = 3.74268
 radius = 1.0
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
+collision_layer = 17
+collision_mask = 31
 script = ExtResource("1_schv3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

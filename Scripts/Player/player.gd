@@ -1,21 +1,44 @@
 extends CharacterBody3D
 
-const BULLET_SCENE: PackedScene = preload("res://Scenes/Player/bullet.tscn") # Escena de bala, debe ser una constante
-
+@export_group("Combat")
 @export_group("Movement")
 @export var SPEED = 10.0
 @export var JUMP_VELOCITY = 6
 @export var sens := .1
-
-@export_group("Combat")
 @export var health = 100
-@export var stamina = 50
+@export var stamina = 100.0
 
-@onready var cam = $pivot
-@onready var shooting_point: Marker3D = $Shooting_Point
+"""Variables de Dodge"""
+@export var dodge_strength := 12.0
+@export var dodge_duration := 0.4
+@export var dodge_stamina_cost := 20.0
+
+var is_dodging := false
+var dodge_timer := 0.0
+var dodge_direction: Vector3 = Vector3.ZERO
+"""---------------------"""
+
+@onready var cam:  = $pivot
+@onready var animation_player: AnimationPlayer = $player_OnlySkeleton/AnimationPlayer
+
+const AIM_OFFSET := Vector3(1, 1.5, 0.5) # Mueve la cámara medio metro hacia adelante
+const NORMAL_OFFSET := Vector3(1, 2, 2)
+
+var speedWalk = 6.0
+var speedSprint = 12.0
+var lastStaminaBlock := -1
+var maxStamina := 100.0
+var staminaRegenRate := 10.0
+var staminaDrainRate := 25
+var canSprint := true
+var is_shooting = false
+var is_takin_damage = false
+var is_aiming := false
+var is_sprinting := false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
+	animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
 
 func _process(delta: float) -> void:
 	if health <= 0:
@@ -24,7 +47,27 @@ func _process(delta: float) -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	movement(delta)
+	handle_stamina(delta)
+	
+	if Input.is_action_pressed("sprint") and canSprint:
+		is_sprinting = true
+		SPEED = speedSprint
+	else:
+		is_sprinting = false
+		SPEED = speedWalk
+	
+	if Input.is_action_just_pressed("dodge") and not is_dodging and stamina >= dodge_stamina_cost:
+		dodge()
+		
+	if is_dodging:
+		velocity.x = dodge_direction.x
+		velocity.z = dodge_direction.z
+		dodge_timer -= delta
+		if dodge_timer <= 0:
+			is_dodging = false
+	else:
+		movement(delta)
+	
 	move_and_slide()
 
 func _input(event: InputEvent) -> void:
@@ -32,9 +75,32 @@ func _input(event: InputEvent) -> void:
 		rotate_y(deg_to_rad(-event.relative.x * sens)) #Rota el personaje según el movimiento horizontal del mouse
 		cam.rotate_x(deg_to_rad(-event.relative.y * sens)) #Rota la cámara en su eje x según el movimiento vertical
 		cam.rotation.x = clamp(cam.rotation.x, deg_to_rad(-90), deg_to_rad(45)) #Establece los límites de la rotación en el eje x de la cámara
+	
+	#if event.is_action_pressed("shoot"):
+		#shoot()
+	
+	
+	"""Nueva forma de disparar"""
+	if event is InputEventMouseButton && event.pressed && Input.is_action_just_pressed("shoot"):
+		print("fire")
 		
-	if event.is_action_pressed("shoot"):
-		shoot()
+		if not is_takin_damage and not is_shooting:
+			is_shooting = true
+			animation_player.play("player_Shoot/Armature|mixamo_com|Layer0")
+			await animation_player.animation_finished
+			is_shooting = false
+		
+		var cam: Camera3D = $pivot/SpringArm3D/Camera3D
+		var origin = cam.project_ray_origin(event.position)
+		var cam_mouse_ray_project = cam.project_ray_normal(event.position)
+		
+		$GunFireRayCast.fire_shot(origin, cam_mouse_ray_project)
+	
+	if event.is_action_pressed("aim"): #Si se presiona botón de aim, apunta
+		start_aim()
+	
+	if event.is_action_released("aim"): #Deja de apuntar si se libera botón de aim
+		stop_aim()
 
 func movement(delta:float) -> void: #Movimiento del personaje
 	if not is_on_floor():
@@ -49,20 +115,74 @@ func movement(delta:float) -> void: #Movimiento del personaje
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		
+		if not is_takin_damage and not is_shooting:
+			if is_aiming:
+				animation_player.play("player_WalkWithWapon/Armature|mixamo_com|Layer0")  
+			else:
+				animation_player.play("player_Walk/Armature|mixamo_com|Layer0")
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+		
+		if not is_takin_damage and not is_shooting:
+			if is_aiming:
+				animation_player.play("player_Apuntar/Armature|mixamo_com|Layer0")
+			else:
+				animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
 
-func shoot():
-	var bullet = BULLET_SCENE.instantiate() #La escena de la bala 
-	bullet.global_position = shooting_point.global_position
-	bullet.direction = get_direction() 
-	get_node("Bullets").add_child(bullet)
+func handle_stamina(delta: float) -> void:
+	if is_sprinting and is_on_floor():
+		stamina -= staminaDrainRate * delta
+		if stamina <= 0:
+			stamina = 0
+			canSprint = false
+	else:
+		if is_on_floor() and not is_sprinting:
+			stamina += staminaRegenRate * delta
+			if stamina > maxStamina:
+				stamina = maxStamina
+				
+	if stamina > 50.0:
+		canSprint = true
+	
+	var currentBlock := int(stamina / 10)
+	if currentBlock != lastStaminaBlock:
+		print("Stamina: ", stamina, "| Can sprint: ", canSprint)
+		lastStaminaBlock = currentBlock
+
+func dodge() -> void:
+	stamina -= dodge_stamina_cost
+	is_dodging = true
+	dodge_timer = dodge_duration
+	
+	var input_dir := Input.get_vector("left", "right", "forward", "backward")
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if direction == Vector3.ZERO:
+		direction = -transform.basis.z.normalized()
+		
+	dodge_direction = direction * dodge_strength
 
 func receive_attack(damage:float) -> void:
 	health -= damage
+	
+	if is_takin_damage:
+		return
+		
+	is_takin_damage = true
+	animation_player.play("player_DamageWithWeapon/Armature|mixamo_com|Layer0")
+	await animation_player.animation_finished
+	is_takin_damage = false
 
-func get_direction():
-	var direction_x = shooting_point.global_position.x - global_position.x
-	var direction_z = shooting_point.global_position.z - global_position.z
-	return Vector3(direction_x, 0, direction_z)
+func start_aim() -> void: #Comenzar a apuntar
+	is_aiming = true
+	var tween = create_tween()
+	tween.tween_property(cam, "transform:origin", AIM_OFFSET, 0.2)
+	animation_player.play("player_Apuntar/Armature|mixamo_com|Layer0")
+
+func stop_aim() -> void: #Dejar de apuntar
+	is_aiming = false
+	var tween = create_tween()
+	tween.tween_property(cam, "transform:origin", NORMAL_OFFSET, 0.2)
+	animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
