@@ -91,6 +91,8 @@ height = 12.0
 radius = 12.0
 
 [node name="Dragon" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 12
 script = ExtResource("1_pf1ax")
 
 [node name="dragon" parent="." instance=ExtResource("1_wnw28")]
@@ -103,6 +105,7 @@ shape = SubResource("BoxShape3D_6rxfk")
 [node name="Fire_RayCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(0, 1, 44)
+collision_mask = 9
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_height_offset = 1.0
@@ -126,18 +129,22 @@ process_material = SubResource("ParticleProcessMaterial_mswqv")
 draw_pass_1 = SubResource("QuadMesh_20pkq")
 
 [node name="FireBreath_Hitbox" type="Area3D" parent="FireParticles"]
+collision_layer = 2
+collision_mask = 25
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FireParticles/FireBreath_Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19, -1.5)
 shape = SubResource("CapsuleShape3D_mswqv")
 
 [node name="MeleeAttack_Hitbox" type="Area3D" parent="."]
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack_Hitbox"]
 shape = SubResource("SphereShape3D_20pkq")
 
 [node name="ImpactZone_Hitbox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ImpactZone_Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.35, 0)

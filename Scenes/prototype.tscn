@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=11 format=3 uid="uid://wtut8q7yoes0"]
 
-[ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="1_6koui"]
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
+[ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="1_uurmw"]
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
-[ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="4_3mrnv"]
 [ext_resource type="PackedScene" uid="uid://bkel33em2ur1c" path="res://Scenes/Player/healItem.tscn" id="3_6koui"]
+[ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="4_3mrnv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -234,6 +234,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -1.6, 9.3)
 radius = 4.2
 smooth_faces = false
 
+[node name="Dragon" parent="NavigationRegion3D" instance=ExtResource("1_uurmw")]
+
 [node name="Player" parent="." instance=ExtResource("1_6ox75")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.554, 2.34816, 47.539)
 
@@ -263,9 +265,10 @@ transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 7, 0)
 shape = SubResource("BoxShape3D_6koui")
 debug_fill = false
 
-[connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]
 [node name="Area3D" parent="." instance=ExtResource("3_6koui")]
 transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -24.6726, 2.0268, 0)
 
 [node name="Area3D2" parent="." instance=ExtResource("3_6koui")]
 transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -16.4698, 2.0268, 11.642)
+
+[connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]

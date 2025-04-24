@@ -24,9 +24,9 @@ func _check_hit():
 	
 	if result and result.collider:
 		print("Hit! Collider: ", result.collider.name)  # Verificar qué objeto se está golpeando
-		if result.collider is BaseEnemy:
+		if result.collider is Dragon:
 			print("Enemy hit!")
-			result.collider.receive_attack(1.0)
+			result.collider.receive_attack(10.0)
 
 func _physics_process(delta: float) -> void:
 	if check_hit:
