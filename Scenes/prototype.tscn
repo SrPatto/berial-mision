@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
 [ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="4_3mrnv"]
+[ext_resource type="PackedScene" uid="uid://bkel33em2ur1c" path="res://Scenes/Player/healItem.tscn" id="3_6koui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -263,3 +264,8 @@ shape = SubResource("BoxShape3D_6koui")
 debug_fill = false
 
 [connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]
+[node name="Area3D" parent="." instance=ExtResource("3_6koui")]
+transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -24.6726, 2.0268, 0)
+
+[node name="Area3D2" parent="." instance=ExtResource("3_6koui")]
+transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -16.4698, 2.0268, 11.642)
