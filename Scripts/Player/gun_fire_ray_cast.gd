@@ -1,7 +1,7 @@
 extends Node3D
 
 const RAY_LENGHT = 1000
-const COLLISION_LAYER_ID = pow(2, 4) + pow(2, 3)
+const COLLISION_LAYER_ID = pow(2, 4) + pow(2, 3) + pow (2, 1)
 var check_hit = false
 var origin
 var cam_mouse_ray_project

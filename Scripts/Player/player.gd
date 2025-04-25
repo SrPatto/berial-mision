@@ -3,6 +3,8 @@ extends CharacterBody3D
 @export_group("Combat")
 @export var health = 100
 @export var max_health = 100
+@export var max_heals := 3 #¿Cuántas curas puede tener como máximo?
+
 @export_group("Movement")
 @export var SPEED = 10.0
 @export var JUMP_VELOCITY = 6
@@ -25,19 +27,30 @@ var maxStamina := 100.0
 var staminaRegenRate := 10.0
 var staminaDrainRate := 25
 var dodge_timer := 0.0
+var current_heals := max_heals #curas que tiene actualmente
 var dodge_direction: Vector3 = Vector3.ZERO
 
 var canSprint := true
 var is_dodging := false
 var is_shooting = false
+
+"""Variables para auto-fire"""
+var is_shooting_auto = false
+var time_since_last_shot = 0.0
+var fire_rate = 0.2 #Sengundos entre disparos 
+"""________________________"""
+
+"""Variables para reload"""
+@export_group("Ammo")
+@export var magazine_size := 100
+var ammo := magazine_size
+var reserve_ammo := 100 #Balas que no están en el cargador
+"""_____________________"""
+
 var is_takin_damage = false
+var is_healing := false
 var is_aiming := false
 var is_sprinting := false
-
-"""Variables de curación"""
-@export var max_heals := 3 #¿Cuántas curas puede tener como máximo?
-var current_heals := max_heals #curas que tiene actualmente
-var is_healing := false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
@@ -47,7 +60,6 @@ func _process(delta: float) -> void:
 	if health <= 0:
 		# todo: muerte del jugador
 		pass
-	
 
 func _physics_process(delta: float) -> void:
 	handle_stamina(delta)
@@ -61,6 +73,14 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("dodge") and not is_dodging and stamina >= dodge_stamina_cost:
 		dodge()
+		
+	
+	"""Lógica de auto-fire"""
+	if is_shooting_auto and  not is_shooting:
+		time_since_last_shot += delta
+		if time_since_last_shot >= fire_rate:
+			fire()
+			time_since_last_shot = 0.0
 		
 	if is_dodging:
 		velocity.x = dodge_direction.x
@@ -79,20 +99,17 @@ func _input(event: InputEvent) -> void:
 		cam.rotate_x(deg_to_rad(-event.relative.y * sens)) #Rota la cámara en su eje x según el movimiento vertical
 		cam.rotation.x = clamp(cam.rotation.x, deg_to_rad(-90), deg_to_rad(45)) #Establece los límites de la rotación en el eje x de la cámara
 		
-	if event is InputEventMouseButton && event.pressed && Input.is_action_just_pressed("shoot"):
-		print("fire")
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				is_shooting_auto = true
+				if ammo > 0:
+					fire()
+					time_since_last_shot = 0.0
+			else:
+				is_shooting_auto = false
 		
-		if not is_takin_damage and not is_shooting:
-			is_shooting = true
-			animation_player.play("player_Shoot/Armature|mixamo_com|Layer0")
-			await animation_player.animation_finished
-			is_shooting = false
-		
-		var cam: Camera3D = $pivot/SpringArm3D/Camera3D
-		var origin = cam.project_ray_origin(event.position)
-		var cam_mouse_ray_project = cam.project_ray_normal(event.position)
-		
-		$GunFireRayCast.fire_shot(origin, cam_mouse_ray_project)
+
 	
 	if event.is_action_pressed("aim"): #Si se presiona botón de aim, apunta
 		start_aim()
@@ -102,6 +119,9 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("heal"):
 		heal()
+		
+	if event.is_action_pressed("reload"):
+		reload()
 
 func movement(delta:float) -> void: #Movimiento del personaje
 	if not is_on_floor():
@@ -152,13 +172,17 @@ func handle_stamina(delta: float) -> void:
 		print("Stamina: ", stamina, "| Can sprint: ", canSprint)
 		lastStaminaBlock = currentBlock
 
-"""Suma de curas al inventario"""
 func apply_heal(amount: int) -> void:
 	if current_heals < max_heals:
 		current_heals += 1
 		print("Recogiste una cura. Curas actuales: ", current_heals)
 	else:
 		print("No puedes recoger más curas, inventario lleno")
+
+"""Función de recolección de cartuchos"""
+func collect_cartridge(ammount: int):
+	reserve_ammo += ammount
+	print("Cartucho recogido. Munición en reserva: ", reserve_ammo)
 
 func dodge() -> void:
 	stamina -= dodge_stamina_cost
@@ -212,3 +236,37 @@ func heal():
 	health = min(health + 50, 100)
 	print("Te curaste, vida actual: ", health, " | Curas restantes: ", current_heals)
 	is_healing = false
+
+func fire():
+	if ammo <= 0:
+		print("¡Sin balas! Recarga")
+		return
+	
+	is_shooting = true
+	animation_player.play("player_Shoot/Armature|mixamo_com|Layer0")
+	await animation_player.animation_finished
+	is_shooting = false
+	
+	ammo -= 1
+	print("Bang! balas restantes: ", ammo)
+	
+	var cam: Camera3D = $pivot/SpringArm3D/Camera3D
+	var origin = cam.project_ray_origin(get_viewport().get_mouse_position())
+	var cam_mouse_ray_project = cam.project_ray_normal(get_viewport().get_mouse_position())
+	
+	$GunFireRayCast.fire_shot(origin, cam_mouse_ray_project)
+
+func reload():
+	if ammo == magazine_size:
+		print("Ya tienes el cargador lleno, mamahuevo")
+		return
+	
+	var needed = magazine_size - ammo
+	var to_reload = min(needed, reserve_ammo)
+	
+	if to_reload > 0:
+		ammo += to_reload
+		reserve_ammo -= to_reload
+		print("Recargando... Balas en cargador: ", ammo, " | En reserva: ", reserve_ammo)
+	else:
+		print("¡Se nos acabaron las balas!")

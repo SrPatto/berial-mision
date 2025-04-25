@@ -13,7 +13,13 @@ func _physics_process(delta: float) -> void:
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 	move_and_slide()
+	
+	if LIFE <= 0:
+		die()
 
 func receive_attack(damage: float) -> void:
 	LIFE -= damage
 	print("dragon life: ", LIFE)
+	
+func die() -> void:
+	queue_free()
