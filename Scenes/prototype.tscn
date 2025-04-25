@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://wtut8q7yoes0"]
+[gd_scene load_steps=12 format=3 uid="uid://wtut8q7yoes0"]
 
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="1_6ox75"]
 [ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="1_uurmw"]
 [ext_resource type="PackedScene" uid="uid://c7huoimq03bxo" path="res://Scenes/Enemy/basicEnemy.tscn" id="2_4ousu"]
 [ext_resource type="PackedScene" uid="uid://bkel33em2ur1c" path="res://Scenes/Player/healItem.tscn" id="3_6koui"]
 [ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="4_3mrnv"]
+[ext_resource type="PackedScene" uid="uid://csjfy1tlx00ye" path="res://Scenes/UI/pause_menu.tscn" id="6_dig14"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5hwrp"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -270,5 +271,10 @@ transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, 
 
 [node name="Area3D2" parent="." instance=ExtResource("3_6koui")]
 transform = Transform3D(1, 0, 0, 0, 0.99937, 0.0354925, 0, -0.0354925, 0.99937, -16.4698, 2.0268, 11.642)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("6_dig14")]
+visible = false
 
 [connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]
