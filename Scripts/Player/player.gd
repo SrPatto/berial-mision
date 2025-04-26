@@ -59,15 +59,19 @@ var is_in_air = false
 var is_landing = false
 """_________________________________"""
 
+"""Variables de muerte"""
+var is_frozen = false
+"""___________________"""
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
-	animation_player.play("player_Idle")
+	animation_player.play("player/Idle")
 	animation_player.connect("animation_finished", Callable(self, "_on_animation finished"))
 
 func _process(delta: float) -> void:
 	if health <= 0:
-		# TODO: muerte del jugador
-		pass
+		die()
+		return
 
 func _physics_process(delta: float) -> void:
 	handle_stamina(delta)
@@ -102,6 +106,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _input(event: InputEvent) -> void:
+	if is_frozen:
+		return
+	
 	if event is InputEventMouseMotion: #Al detectar movimiento en el mouse
 		rotate_y(deg_to_rad(-event.relative.x * sens)) #Rota el personaje según el movimiento horizontal del mouse
 		cam.rotate_x(deg_to_rad(-event.relative.y * sens)) #Rota la cámara en su eje x según el movimiento vertical
@@ -132,6 +139,9 @@ func _input(event: InputEvent) -> void:
 		reload()
 
 func movement(delta:float) -> void: #Movimiento del personaje
+	if is_frozen:
+		return
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	else:
@@ -275,6 +285,17 @@ func heal():
 	health = min(health + 50, max_health)
 	print("Te curaste, vida actual: ", health, " | Curas restantes: ", current_heals)
 	is_healing = false
+
+func die():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	velocity =Vector3.ZERO
+	animation_player.play("player/Die") 
+	
+	is_frozen = true
+	
+	set_process(false)
+	await animation_player.animation_finished
+	print("Has muerto, amigazo, reiniciando escena")
 
 func fire():
 	if ammo <= 0:
