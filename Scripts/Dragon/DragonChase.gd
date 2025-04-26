@@ -5,6 +5,7 @@ func Enter():
 	
 	dragon.isFlying = false
 	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["FOOTSTEPS"])
+	animation_player.play("Dragon/Walk")
 	pass
 	
 func Exit():
@@ -18,6 +19,9 @@ func Update(_delta: float):
 		Transitioned.emit(self, "FireBreathState")
 	elif player_distant() > MAX_DISTANCE:
 		Transitioned.emit(self, "FlyState")
+	
+	if dragon.LIFE <= 0:
+		Transitioned.emit(self, "DeathState")
 
 func Physics_Update(_delta: float):
 	pass

@@ -14,6 +14,7 @@ func Enter():
 	
 	next_attack = randi_range(1,2)
 	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["WINGS"])
+	animation_player.play("Dragon/StartFly")
 
 func Exit():
 	pass
@@ -29,14 +30,17 @@ func Update(_delta: float):
 			2:
 				print("YO SOY LA GUERRAAAAAAAAAAAAAA!!!")
 				Transitioned.emit(self, "ChargeState")
-	pass
+				
+	if dragon.LIFE <= 0:
+		Transitioned.emit(self, "DeathState")
 	
 func Physics_Update(_delta: float):
 	if dragon.global_position.y <= MAX_HEIGHT:
 		fly(_delta)
-	elif isMaxHeigth == false:
+	elif !isMaxHeigth:
 		dragon.velocity = Vector3.ZERO
 		isMaxHeigth = true
+		animation_player.play("Dragon/Fly")
 		fly_pause_timer.start()
 	pass
 

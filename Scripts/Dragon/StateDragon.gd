@@ -15,6 +15,7 @@ var navigation_agent_3d: NavigationAgent3D
 var fire_ray_cast: RayCast3D
 var fly_pause_timer: Timer
 var cd_fire_breath: Timer
+var animation_player: AnimationPlayer
 
 var player: CharacterBody3D
 var player_direction
@@ -34,3 +35,4 @@ func get_variables():
 	navigation_agent_3d = $"../../NavigationAgent3D"
 	cd_fire_breath = $"../../CD_FireBreath"
 	fire_ray_cast = $"../../Fire_RayCast"
+	animation_player = $"../../dragon_Skeleton/AnimationPlayer"

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://buwir5nwab5xr"]
+[gd_scene load_steps=6 format=3 uid="uid://buwir5nwab5xr"]
 
 [ext_resource type="FontFile" uid="uid://bun2qosgr1yav" path="res://Assets/UI/Fonts/Swiss 721 Extended Bold.otf" id="1_5wsvm"]
 [ext_resource type="Script" uid="uid://b0yrwkretq2u0" path="res://Scripts/UI/main_menu.gd" id="1_i2xx2"]
 [ext_resource type="PackedScene" uid="uid://dcs5ofc5qadex" path="res://Scenes/UI/settings_menu.tscn" id="3_o14dv"]
 [ext_resource type="AudioStream" uid="uid://c65bsu2spn68c" path="res://Assets/SFX/UI/button-2.mp3" id="4_u7lva"]
+[ext_resource type="AudioStream" uid="uid://cfygh06i4xr1r" path="res://Assets/Music/title_screen.mp3" id="5_mrfpk"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -64,6 +65,11 @@ layout_mode = 1
 
 [node name="btn_sfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_u7lva")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_mrfpk")
+autoplay = true
+bus = &"Music"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/btn_Play" to="." method="_on_btn_play_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/btn_Options" to="." method="_on_btn_options_pressed"]

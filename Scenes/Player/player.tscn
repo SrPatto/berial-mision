@@ -2322,6 +2322,7 @@ script = ExtResource("1_tpd1a")
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.001)
 target_position = Vector3(0, 0, -3)
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000834227, 0.9951, 0.00381446)

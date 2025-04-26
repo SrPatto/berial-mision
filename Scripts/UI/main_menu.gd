@@ -2,7 +2,7 @@ extends Control
 
 @onready var btn_sfx: AudioStreamPlayer = $btn_sfx
 
-const TUTORIAL_SCENE = "res://Scenes/prototype.tscn" # CAMBIAR
+const TUTORIAL_SCENE = "res://Scenes/Levels/main_level.tscn" # CAMBIAR
 
 func _on_btn_play_pressed() -> void:
 	btn_sfx.play(.25)

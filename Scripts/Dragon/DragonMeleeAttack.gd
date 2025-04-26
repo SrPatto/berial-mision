@@ -26,18 +26,16 @@ func Update(_delta: float):
 	var targetPos2d : Vector2 = Vector2(player.global_position.x, player.global_position.z)
 	var direction = -(pos2D - targetPos2d)
 	dragon.rotation.y = lerp_angle(dragon.rotation.y, atan2(direction.x, direction.y), _delta * 4)
-	
 	cd_attack_time -= _delta
 	
 	if cd_attack_time <= 0 && !isAttacking:
 		Transitioned.emit(self,"ChaseState")
 	
-func Physics_Update(_delta: float):
-	
-	pass
+	if dragon.LIFE <= 0:
+		Transitioned.emit(self, "DeathState")
 	
 func attack():
 	if melee_attack_hitbox.overlaps_body(player):
-		player.health -= MELEE_DAMAGE
+		player.receive_attack(MELEE_DAMAGE)
 		print("melee hit! player life: ", player.health)
 	isAttacking = false

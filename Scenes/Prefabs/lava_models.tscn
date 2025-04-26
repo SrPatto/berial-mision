@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cadytpamn7tl"]
+
+[ext_resource type="PackedScene" uid="uid://ctkvgeto8v3f4" path="res://Assets/Models/Environment/lava.glb" id="1_bc1c3"]
+
+[node name="lava-models" instance=ExtResource("1_bc1c3")]
+
+[node name="Icosphere" parent="." index="4"]
+transform = Transform3D(1, -0.000908729, 0.000186524, 0.000540725, 1.68053, 6.74261e-05, -0.000186563, -0.000113129, 1, 6.3026, 0, -6.87216)
+
+[node name="Icosphere_003" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.57766, -4.76837e-07, -6.90144)
+
+[node name="Icosphere_006" parent="." index="7"]
+transform = Transform3D(1, -0.000908729, 0.000186524, 0.000540725, 1.68053, 6.74261e-05, -0.000186563, -0.000113129, 1, 6.3026, 0, -6.87216)
+
+[node name="Icosphere_007" parent="." index="8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.57766, -4.76837e-07, -6.90144)

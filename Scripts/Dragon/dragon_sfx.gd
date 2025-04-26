@@ -16,7 +16,6 @@ var sfx
 
 func _ready() -> void:
 	sfx = get_stream_playback()
-	print(sfx)
 
 func change_sound(clip):
 	sfx.switch_to_clip(clip)

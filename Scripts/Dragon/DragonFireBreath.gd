@@ -18,6 +18,7 @@ func Enter():
 	
 	if dragon.isFlying:
 		dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["WINGS"])
+		animation_player.play("Dragon/Fly")
 		player_lastPosition = player.global_position
 		direction = get_direction()
 		dragon.look_at_from_position(dragon.global_position, Vector3(player_lastPosition.x, dragon.global_position.y, player_lastPosition.z), Vector3.UP, true)
@@ -27,6 +28,7 @@ func Enter():
 		currentSFX = dragon_sfx.get_currentClip()
 	else:
 		dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["FIREBREATH"])
+		# todo: animation firebreath
 		fire_breath_timer.start()
 		fire_particles.position.y = 3
 		fire_particles.rotation.x = 55.01 
@@ -38,7 +40,9 @@ func Update(_delta: float):
 	
 	if dragon.isFlying && !isAttacking :
 		Transitioned.emit(self, "ChargeState")
-	pass
+	
+	if dragon.LIFE <= 0:
+		Transitioned.emit(self, "DeathState")
 	
 func Physics_Update(_delta: float):
 	if dragon.isFlying:
@@ -82,9 +86,10 @@ func _on_fire_breath_timer_timeout():
 func _on_fire_damage_timer_timeout():
 	if dragon.isFlying:
 		if fire_breath_hitbox.overlaps_body(player):
-			player.health -= FIRE_DAMAGE
+			player.receive_attack(FIRE_DAMAGE)
+			#player.health -= FIRE_DAMAGE
 		print(player.health)
 	else:
 		if fire_breath_hitbox.overlaps_body(player) && fire_ray_cast.get_collider() == player:
-			player.health -= FIRE_DAMAGE
+			player.receive_attack(FIRE_DAMAGE)
 			print(player.health)
