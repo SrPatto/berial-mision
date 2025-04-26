@@ -3,7 +3,7 @@ extends CharacterBody3D
 class_name Dragon
 
 @export
-var LIFE: int = 1000
+var LIFE: int = 100
 
 var isFlying = false
 var isSleeping = true

@@ -10,9 +10,9 @@ extends CharacterBody3D
 @export var JUMP_VELOCITY = 6
 @export var sens := .1
 @export var stamina = 100.0
-@export var dodge_strength := 12.0
-@export var dodge_duration := 0.4
-@export var dodge_stamina_cost := 20.0
+@export var dodge_strength := 15.0
+@export var dodge_duration := 1.2
+@export var dodge_stamina_cost := 30.0
 
 @onready var cam:  = $pivot
 @onready var animation_player: AnimationPlayer = $player_OnlySkeleton/AnimationPlayer
@@ -43,6 +43,7 @@ var fire_rate = 0.2 #Sengundos entre disparos
 """Variables para reload"""
 @export_group("Ammo")
 @export var magazine_size := 100
+var is_reloading = false
 var ammo := magazine_size
 var reserve_ammo := 100 #Balas que no están en el cargador
 """_____________________"""
@@ -52,13 +53,20 @@ var is_healing := false
 var is_aiming := false
 var is_sprinting := false
 
+"""Variables para animación de salto"""
+var is_starting_to_jump = false
+var is_in_air = false
+var is_landing = false
+"""_________________________________"""
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
-	animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
+	animation_player.play("player_Idle")
+	animation_player.connect("animation_finished", Callable(self, "_on_animation finished"))
 
 func _process(delta: float) -> void:
 	if health <= 0:
-		# todo: muerte del jugador
+		# TODO: muerte del jugador
 		pass
 
 func _physics_process(delta: float) -> void:
@@ -126,10 +134,28 @@ func _input(event: InputEvent) -> void:
 func movement(delta:float) -> void: #Movimiento del personaje
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+	else:
+		if is_starting_to_jump or is_in_air:
+			is_starting_to_jump = false
+			is_in_air = false
+			is_landing = true
+			animation_player.play("player/Jump3")
+			return
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		is_starting_to_jump = true
+		is_in_air = false
+		is_landing = false
+		animation_player.play("player/Jump1")
+		return
+	
+	if is_starting_to_jump and not is_on_floor():
+		is_starting_to_jump = false
+		is_in_air = true
+		animation_player.play("player/Jump2")
+		return
 
 	var input_dir := Input.get_vector("left", "right", "forward", "backward")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -137,20 +163,23 @@ func movement(delta:float) -> void: #Movimiento del personaje
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		
-		if not is_takin_damage and not is_shooting:
-			if is_aiming:
-				animation_player.play("player_WalkWithWapon/Armature|mixamo_com|Layer0")  
+		if not is_takin_damage and not is_shooting and not is_reloading and not (is_starting_to_jump or is_in_air or is_landing):
+			if is_sprinting:
+				animation_player.play("player/Sprint")
+			elif is_aiming:
+				animation_player.play("player/AimWalk")
 			else:
-				animation_player.play("player_Walk/Armature|mixamo_com|Layer0")
+				animation_player.play("player/Walk")
+
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 		
-		if not is_takin_damage and not is_shooting:
+		if not is_takin_damage and not is_shooting and not is_reloading and not (is_starting_to_jump or is_in_air or is_landing):
 			if is_aiming:
-				animation_player.play("player_Apuntar/Armature|mixamo_com|Layer0")
+				animation_player.play("player/Apuntar")
 			else:
-				animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
+				animation_player.play("player/Idle")
 
 func handle_stamina(delta: float) -> void:
 	if is_sprinting and is_on_floor():
@@ -196,6 +225,16 @@ func dodge() -> void:
 		direction = -transform.basis.z.normalized()
 		
 	dodge_direction = direction * dodge_strength
+	
+	animation_player.play("player/Dodge")
+	
+	velocity.x = dodge_direction.x
+	velocity.z = dodge_direction.z
+	is_sprinting = false
+	
+	await animation_player.animation_finished
+	
+	is_dodging = false
 
 func receive_attack(damage:float) -> void:
 	health -= damage
@@ -205,7 +244,7 @@ func receive_attack(damage:float) -> void:
 		return
 		
 	is_takin_damage = true
-	animation_player.play("player_DamageWithWeapon/Armature|mixamo_com|Layer0")
+	animation_player.play("player/Damage")
 	await animation_player.animation_finished
 	is_takin_damage = false
 
@@ -213,13 +252,13 @@ func start_aim() -> void: #Comenzar a apuntar
 	is_aiming = true
 	var tween = create_tween()
 	tween.tween_property(cam, "transform:origin", AIM_OFFSET, 0.2)
-	animation_player.play("player_Apuntar/Armature|mixamo_com|Layer0")
+	animation_player.play("player/Apuntar")
 
 func stop_aim() -> void: #Dejar de apuntar
 	is_aiming = false
 	var tween = create_tween()
 	tween.tween_property(cam, "transform:origin", NORMAL_OFFSET, 0.2)
-	animation_player.play("player_IdleWithWeapon/Armature|mixamo_com|Layer0")
+	animation_player.play("player/Idle")
 
 func heal():
 	if current_heals <= 0 or is_healing or is_takin_damage or is_dodging or is_shooting:
@@ -233,7 +272,7 @@ func heal():
 	is_healing = true
 	current_heals -= 1 #Se comsume una cura
 	
-	health = min(health + 50, 100)
+	health = min(health + 50, max_health)
 	print("Te curaste, vida actual: ", health, " | Curas restantes: ", current_heals)
 	is_healing = false
 
@@ -243,7 +282,7 @@ func fire():
 		return
 	
 	is_shooting = true
-	animation_player.play("player_Shoot/Armature|mixamo_com|Layer0")
+	animation_player.play("player/Shoot")
 	await animation_player.animation_finished
 	is_shooting = false
 	
@@ -267,6 +306,27 @@ func reload():
 	if to_reload > 0:
 		ammo += to_reload
 		reserve_ammo -= to_reload
+		is_reloading = true
+		
+		if is_moving():
+			print("Me muevo")
+			animation_player.play("player/ReloadWalk")
+		else:
+			print("No me muevo")
+			animation_player.play("player/Reload")
+			
 		print("Recargando... Balas en cargador: ", ammo, " | En reserva: ", reserve_ammo)
+		
+		animation_player.connect("animation_finished", Callable(self, "_on_reload_animation_finished"))
 	else:
 		print("¡Se nos acabaron las balas!")
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "player/Jump3":
+		is_landing = false
+	if anim_name == "player/Reload" or anim_name == "player/ReloadWalk":
+		is_reloading = false	
+		animation_player.disconnect("animation_finished", Callable(self, "_on_reload_animation_finished"))
+
+func is_moving() -> bool:
+	return velocity.length() != 0
