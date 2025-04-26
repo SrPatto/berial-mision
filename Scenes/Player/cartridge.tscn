@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://ugah2320g7q3"]
+
+[ext_resource type="Script" uid="uid://cvsw4or5r8nch" path="res://Scenes/Player/cartridge.gd" id="1_u6rn5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rrig7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_2k4c7"]
+
+[node name="Area3D" type="Area3D"]
+script = ExtResource("1_u6rn5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_rrig7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_2k4c7")
+skeleton = NodePath("../CollisionShape3D")
