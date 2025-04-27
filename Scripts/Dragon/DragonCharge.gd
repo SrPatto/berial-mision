@@ -34,7 +34,8 @@ func Update(_delta: float):
 				print("IMPACT! player: ", player.health)
 			fly_pause_timer.wait_time = 3
 			dragon.isFlying = false
-			dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["GROUND-IMPACT"]))
+			dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["GROUND-IMPACT"])
+			get_parent().get_parent().get_parent().get_parent().apply_shake(2))
 		charge_tween.tween_callback(func (): timerFlag = true )
 			
 	if timerFlag:

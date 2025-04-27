@@ -292,8 +292,8 @@ func fire():
 	var cam: Camera3D = $pivot/SpringArm3D/Camera3D
 	var origin = cam.project_ray_origin(get_viewport().get_mouse_position())
 	var cam_mouse_ray_project = cam.project_ray_normal(get_viewport().get_mouse_position())
-	
 	$GunFireRayCast.fire_shot(origin, cam_mouse_ray_project)
+	$AudioStreamPlayer3D.play()
 	$"player_OnlySkeleton/Armature/Skeleton3D/BoneAttachment3D/Arma B/GPUParticles3D".emitting = true
 
 func reload():

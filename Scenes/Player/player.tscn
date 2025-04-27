@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://cv4l875r6u1oh"]
+[gd_scene load_steps=45 format=4 uid="uid://cv4l875r6u1oh"]
 
 [ext_resource type="Script" uid="uid://dehh14aun35db" path="res://Scripts/Player/player.gd" id="1_tpd1a"]
 [ext_resource type="Texture2D" uid="uid://jos4wpbf6xiw" path="res://Assets/Prototype/crosshair051.png" id="2_a3d8c"]
@@ -8,12 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://pytxugy6x5fi" path="res://Assets/Models/Player/player_OnlySkeleton.glb" id="4_htcer"]
 [ext_resource type="Texture2D" uid="uid://bx7xclb0fd5bg" path="res://Assets/Models/Player/Weapons/Weapons_paletaA.png" id="5_dd0ac"]
 [ext_resource type="Texture2D" uid="uid://c6u1qtufgyi3c" path="res://Assets/Models/Player/Weapons/muzzle_02.png" id="6_0u5uq"]
-[ext_resource type="AudioStream" uid="uid://i7u5ucunwfnf" path="res://Assets/SFX/Player/concrete-walking.mp3" id="6_dd0ac"]
+[ext_resource type="AudioStream" uid="uid://q7l6oeb4wj55" path="res://Assets/SFX/Player/shoot.wav" id="6_7g0yx"]
 [ext_resource type="Texture2D" uid="uid://xel2a1jiwntl" path="res://Assets/UI/pngtree-lightning-electric-icon-png-image_6486818.png" id="7_0u5uq"]
 [ext_resource type="Texture2D" uid="uid://jmqb4lqq4avj" path="res://Assets/UI/Health-Logo-Transparent-Free-PNG.png" id="8_jlvik"]
 [ext_resource type="Texture2D" uid="uid://ddqdsb006rf20" path="res://Assets/UI/99396.png" id="10_74mp2"]
-[ext_resource type="FontFile" uid="uid://36er8108brph" path="res://Assets/UI/Fonts/FS Sinclair Pack/FS Sinclair Bold Italic.otf" id="10_oikmp"]
 [ext_resource type="Texture2D" uid="uid://daynqdbkshegg" path="res://Assets/UI/Fortnite_medkit_healing_health_material_shield_97-512.webp" id="11_oikmp"]
+[ext_resource type="FontFile" uid="uid://bcayhb0kmdfw2" path="res://Assets/UI/Fonts/FS Sinclair Pack/FS Sinclair Medium.otf" id="12_7g0yx"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4flbx"]
 
@@ -5556,79 +5556,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.000564814)
 shape = SubResource("CapsuleShape3D_sh265")
 
 [node name="pivot" type="Node3D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2, 2)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
 
 [node name="SpringArm3D" type="SpringArm3D" parent="pivot"]
 
 [node name="Camera3D" type="Camera3D" parent="pivot/SpringArm3D"]
 
 [node name="GunFireRayCast" type="Node3D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
 script = ExtResource("3_xpcdj")
 
 [node name="player_OnlySkeleton" parent="." instance=ExtResource("4_htcer")]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
 transform = Transform3D(-0.34, 0, -2.97237e-08, 0, 0.34, 0, 2.97237e-08, 0, -0.34, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
-
-[node name="Armature" parent="player_OnlySkeleton" index="0"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
 
 [node name="Skeleton3D" parent="player_OnlySkeleton/Armature" index="0"]
 bones/0/position = Vector3(5.40222, -3.30121, -274.106)
@@ -5688,7 +5626,7 @@ bones/31/rotation = Quaternion(0.272427, -0.037041, 0.00921822, 0.961419)
 bones/32/position = Vector3(1.47372e-05, 26.5996, 4.84275e-07)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="player_OnlySkeleton/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.604174, -0.767294, -0.21502, -0.724735, 0.641285, -0.252016, 0.331259, 0.0035712, -0.943533, -35.002, 210.837, -403.355)
+transform = Transform3D(-0.604174, -0.767294, -0.21502, -0.724735, 0.641285, -0.252016, 0.331259, 0.00357103, -0.943533, -35.0021, 210.837, -403.355)
 bone_name = "mixamorig_LeftHand"
 bone_idx = 10
 
@@ -5714,7 +5652,7 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("6_dd0ac")
+stream = ExtResource("6_7g0yx")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("2_dd0ac")
@@ -5805,7 +5743,7 @@ offset_left = 71.0
 offset_top = 626.0
 offset_right = 430.0
 offset_bottom = 717.0
-theme_override_fonts/font = ExtResource("10_oikmp")
+theme_override_fonts/font = ExtResource("12_7g0yx")
 theme_override_font_sizes/font_size = 28
 text = "400 balas en reserva"
 horizontal_alignment = 1
@@ -5816,7 +5754,7 @@ offset_left = 136.0
 offset_top = 574.0
 offset_right = 345.0
 offset_bottom = 665.0
-theme_override_fonts/font = ExtResource("10_oikmp")
+theme_override_fonts/font = ExtResource("12_7g0yx")
 theme_override_font_sizes/font_size = 28
 text = "Cargador actual"
 horizontal_alignment = 1
@@ -5827,7 +5765,7 @@ offset_left = 1078.0
 offset_top = 623.0
 offset_right = 1217.0
 offset_bottom = 714.0
-theme_override_fonts/font = ExtResource("10_oikmp")
+theme_override_fonts/font = ExtResource("12_7g0yx")
 theme_override_font_sizes/font_size = 28
 text = "3/3"
 horizontal_alignment = 1
@@ -5838,7 +5776,7 @@ offset_left = 992.0
 offset_top = 591.0
 offset_right = 1169.0
 offset_bottom = 682.0
-theme_override_fonts/font = ExtResource("10_oikmp")
+theme_override_fonts/font = ExtResource("12_7g0yx")
 theme_override_font_sizes/font_size = 28
 text = "Estimulantes"
 horizontal_alignment = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://ufy37q4fwnyt"]
+[gd_scene load_steps=68 format=4 uid="uid://ufy37q4fwnyt"]
 
 [ext_resource type="Script" uid="uid://o8jgogxbua1h" path="res://Scripts/Level/level_manager.gd" id="1_5iftk"]
 [ext_resource type="PackedScene" uid="uid://fqnyfsdwy1n7" path="res://Scenes/Levels/LIMITS.tscn" id="1_soxo8"]
@@ -13,6 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://n6udqjxe64l7" path="res://Assets/Models/Environment/lava_firePalette.png" id="5_soxo8"]
 [ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="10_tf6wi"]
 [ext_resource type="PackedScene" uid="uid://csjfy1tlx00ye" path="res://Scenes/UI/pause_menu.tscn" id="11_arl3j"]
+[ext_resource type="PackedScene" uid="uid://bkel33em2ur1c" path="res://Scenes/Player/healItem.tscn" id="12_i7ckp"]
+[ext_resource type="PackedScene" uid="uid://ugah2320g7q3" path="res://Scenes/Player/cartridge.tscn" id="13_sekmo"]
+[ext_resource type="PackedScene" uid="uid://bnvenocq7ms7a" path="res://Scenes/UI/game_over.tscn" id="14_omwgp"]
+[ext_resource type="PackedScene" uid="uid://cqm2ca2bglvkg" path="res://Scenes/UI/controls.tscn" id="15_8io8c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_omwgp"]
 shader = ExtResource("3_g5xey")
@@ -764,21 +768,6 @@ points = PackedVector3Array(-0.542666, 0.00587029, -0.742029, -0.695602, 0.00196
 radius = 1.42969
 
 [node name="MainLevel" type="Node3D"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
 script = ExtResource("1_5iftk")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
@@ -794,22 +783,7 @@ shadow_enabled = true
 environment = SubResource("Environment_8io8c")
 
 [node name="MontainsBackground" type="Node3D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
 
 [node name="Icosphere_004" type="MeshInstance3D" parent="MontainsBackground"]
 transform = Transform3D(-10.0666, 0, 1.27742, 0, 10.1473, 0, -1.27742, 0, -10.0666, 101.458, 8.25677, -47.3168)
@@ -908,22 +882,6 @@ skeleton = NodePath("")
 navigation_mesh = ExtResource("2_5bh32")
 
 [node name="LIMITS" parent="NavigationRegion3D" instance=ExtResource("1_soxo8")]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
 
 [node name="Floor" type="CSGCylinder3D" parent="NavigationRegion3D"]
 use_collision = true
@@ -933,22 +891,6 @@ radius = 100.0
 height = 1.0
 
 [node name="Objects" type="Node3D" parent="NavigationRegion3D"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-rotation_edit_mode = 0
-rotation_order = 2
-top_level = false
-visible = true
-visibility_parent = NodePath("")
-script = null
 
 [node name="Rock-1" type="MeshInstance3D" parent="NavigationRegion3D/Objects"]
 transform = Transform3D(-1.53014, 0, -5.80161, 0, 6, 0, 5.80161, 0, -1.53014, 54.9441, -0.206478, 15.6391)
@@ -1587,6 +1529,44 @@ transform = Transform3D(-0.536254, 0, -0.844057, 0, 1, 0, 0.844057, 0, -0.536254
 [node name="Player" parent="." instance=ExtResource("2_vl75t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.812, 8.22121, 85.8998)
 
+[node name="Items" type="Node3D" parent="."]
+
+[node name="Area3D" parent="Items" instance=ExtResource("12_i7ckp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25188, 1.5, 24.7123)
+
+[node name="Area3D9" parent="Items" instance=ExtResource("12_i7ckp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.8702, 1.5, 3.23552)
+
+[node name="Area3D10" parent="Items" instance=ExtResource("12_i7ckp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7432, 1.5, -43.3022)
+
+[node name="Area3D11" parent="Items" instance=ExtResource("12_i7ckp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.10803, 1.5, 70.039)
+
+[node name="Area3D12" parent="Items" instance=ExtResource("12_i7ckp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.2628, 1.5, -8.79968)
+
+[node name="Area3D2" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1314, 1.5, 0)
+
+[node name="Area3D3" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1314, 1.5, 19.6023)
+
+[node name="Area3D4" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58.8153, 1.5, 36.7183)
+
+[node name="Area3D5" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.9278, 1.5, 36.7183)
+
+[node name="Area3D6" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.9278, 1.5, -13.7479)
+
+[node name="Area3D7" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62973, 1.5, -47.2008)
+
+[node name="Area3D8" parent="Items" instance=ExtResource("13_sekmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.5041, 1.5, -36.375)
+
 [node name="BattleZone" type="Area3D" parent="."]
 script = ExtResource("10_tf6wi")
 
@@ -1600,6 +1580,13 @@ debug_fill = false
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("11_arl3j")]
 visible = false
 
+[node name="GameOver" parent="CanvasLayer" instance=ExtResource("14_omwgp")]
+visible = false
+
+[node name="Controls" parent="CanvasLayer" instance=ExtResource("15_8io8c")]
+
 [connection signal="body_entered" from="BattleZone" to="BattleZone" method="_on_body_entered"]
 
 [editable path="NavigationRegion3D/LIMITS"]
+[editable path="Player"]
+[editable path="Player/player_OnlySkeleton"]

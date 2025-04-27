@@ -14,6 +14,7 @@ func Enter():
 	dragon_sfx.change_sound(dragon_sfx.SFX_DICTIONARY["ATTACK"])
 	if isAttacking:
 		attack()
+		animation_player.play("Dragon/MeleeAttack")
 	cd_attack_time = 2 # TEMPORAL
 	pass
 	
