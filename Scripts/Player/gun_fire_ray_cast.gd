@@ -23,11 +23,13 @@ func _check_hit():
 	var result = get_world_3d().direct_space_state.intersect_ray(query)
 	
 	if result and result.collider:
+		var collider = result.collider
+		print("Collider: ", collider)
 		print("Hit! Collider: ", result.collider.name)  # Verificar qué objeto se está golpeando
-		if result.collider is Dragon:
-			print("Enemy hit!")
-			result.collider.receive_attack(10.0)
-
+		if collider.is_in_group("Dragon") :
+			print("DRAGON hit!")
+			collider.get_parent().get_parent().get_parent().get_parent().get_parent().receive_attack(10.0)
+	
 func _physics_process(delta: float) -> void:
 	if check_hit:
 		check_hit = false

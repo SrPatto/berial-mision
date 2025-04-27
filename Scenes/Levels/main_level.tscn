@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://ufy37q4fwnyt"]
+[gd_scene load_steps=64 format=4 uid="uid://ufy37q4fwnyt"]
 
 [ext_resource type="Script" uid="uid://o8jgogxbua1h" path="res://Scripts/Level/level_manager.gd" id="1_5iftk"]
 [ext_resource type="PackedScene" uid="uid://fqnyfsdwy1n7" path="res://Scenes/Levels/LIMITS.tscn" id="1_soxo8"]
@@ -6,12 +6,31 @@
 [ext_resource type="NavigationMesh" uid="uid://c5gt4xxhlmklw" path="res://Resources/navigationRegion.tres" id="2_5bh32"]
 [ext_resource type="AudioStream" uid="uid://cktuh3ryo6uw" path="res://Assets/Music/re-fightsoundtrack.wav" id="2_5iftk"]
 [ext_resource type="PackedScene" uid="uid://cv4l875r6u1oh" path="res://Scenes/Player/player.tscn" id="2_vl75t"]
+[ext_resource type="Shader" uid="uid://dytc6cqby1o5i" path="res://Assets/Shaders/SkyShader.gdshader" id="3_g5xey"]
 [ext_resource type="Texture2D" uid="uid://cj1vd8a3ldles" path="res://Assets/Models/Environment/lava_paletaA_2.png" id="3_soxo8"]
 [ext_resource type="PackedScene" uid="uid://cu27isnkhug1" path="res://Scenes/Dragon/dragon.tscn" id="4_tf6wi"]
 [ext_resource type="Texture2D" uid="uid://g8wx1wy6huiy" path="res://Assets/Models/Environment/lava_paletaA.png" id="4_vl75t"]
 [ext_resource type="Texture2D" uid="uid://n6udqjxe64l7" path="res://Assets/Models/Environment/lava_firePalette.png" id="5_soxo8"]
 [ext_resource type="Script" uid="uid://dg5gp73ti427u" path="res://Scripts/Level/battle_zone.gd" id="10_tf6wi"]
 [ext_resource type="PackedScene" uid="uid://csjfy1tlx00ye" path="res://Scenes/UI/pause_menu.tscn" id="11_arl3j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_omwgp"]
+shader = ExtResource("3_g5xey")
+shader_parameter/color_top = Color(0.213254, 0.0956691, 0.059004, 1)
+shader_parameter/color_horizon = Color(0.482775, 0.502476, 0.501664, 1)
+shader_parameter/color_bottom = Color(0.433044, 0.221169, 0.155131, 1)
+shader_parameter/exponent_factor_top = 4.0
+shader_parameter/exponent_factor_bottom = 2.0
+shader_parameter/intensity_amp = 1.0
+
+[sub_resource type="Sky" id="Sky_7kyyp"]
+sky_material = SubResource("ShaderMaterial_omwgp")
+
+[sub_resource type="Environment" id="Environment_8io8c"]
+background_mode = 2
+sky = SubResource("Sky_7kyyp")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sxvj2"]
 resource_name = "Red Emisive"
@@ -755,6 +774,9 @@ bus = &"Music"
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.476337, 0.0636101, 0.876959, -0.096666, 0.995122, -0.0196751, -0.873933, -0.0754001, 0.480163, 0, 56.7714, 0)
 shadow_enabled = true
+
+[node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8io8c")
 
 [node name="MontainsBackground" type="Node3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
