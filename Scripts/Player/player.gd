@@ -14,6 +14,9 @@ extends CharacterBody3D
 @export var dodge_duration := 1.2
 @export var dodge_stamina_cost := 30.0
 
+@export_group("Ammo")
+@export var magazine_size := 100
+
 @onready var cam:  = $pivot
 @onready var animation_player: AnimationPlayer = $player_OnlySkeleton/AnimationPlayer
 
@@ -24,44 +27,29 @@ var speedWalk = 6.0
 var speedSprint = 12.0
 var lastStaminaBlock := -1
 var maxStamina := 100.0
+var reserve_ammo := 100 #Balas que no están en el cargador
 var staminaRegenRate := 10.0
 var staminaDrainRate := 25
+var fire_rate = 0.2 #Sengundos entre disparos 
 var dodge_timer := 0.0
+var time_since_last_shot = 0.0
+var ammo := magazine_size
 var current_heals := max_heals #curas que tiene actualmente
 var dodge_direction: Vector3 = Vector3.ZERO
 
 var canSprint := true
 var is_dodging := false
 var is_shooting = false
-
-"""Variables para auto-fire"""
 var is_shooting_auto = false
-var time_since_last_shot = 0.0
-var fire_rate = 0.2 #Sengundos entre disparos 
-"""________________________"""
-
-"""Variables para reload"""
-@export_group("Ammo")
-@export var magazine_size := 100
 var is_reloading = false
-var ammo := magazine_size
-var reserve_ammo := 100 #Balas que no están en el cargador
-"""_____________________"""
-
 var is_takin_damage = false
 var is_healing := false
 var is_aiming := false
 var is_sprinting := false
-
-"""Variables para animación de salto"""
 var is_starting_to_jump = false
 var is_in_air = false
 var is_landing = false
-"""_________________________________"""
-
-"""Variables de muerte"""
 var is_frozen = false
-"""___________________"""
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED #Desaparece el mouse de la pantalla
@@ -86,8 +74,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("dodge") and not is_dodging and stamina >= dodge_stamina_cost:
 		dodge()
 		
-	
-	"""Lógica de auto-fire"""
 	if is_shooting_auto and  not is_shooting:
 		time_since_last_shot += delta
 		if time_since_last_shot >= fire_rate:
@@ -124,11 +110,9 @@ func _input(event: InputEvent) -> void:
 			else:
 				is_shooting_auto = false
 		
-
-	
 	if event.is_action_pressed("aim"): #Si se presiona botón de aim, apunta
 		start_aim()
-	
+		
 	if event.is_action_released("aim"): #Deja de apuntar si se libera botón de aim
 		stop_aim()
 		
@@ -152,7 +136,6 @@ func movement(delta:float) -> void: #Movimiento del personaje
 			animation_player.play("player/Jump3")
 			return
 
-	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		is_starting_to_jump = true
@@ -218,7 +201,6 @@ func apply_heal(amount: int) -> void:
 	else:
 		print("No puedes recoger más curas, inventario lleno")
 
-"""Función de recolección de cartuchos"""
 func collect_cartridge(ammount: int):
 	reserve_ammo += ammount
 	print("Cartucho recogido. Munición en reserva: ", reserve_ammo)
@@ -233,30 +215,27 @@ func dodge() -> void:
 	
 	if direction == Vector3.ZERO:
 		direction = -transform.basis.z.normalized()
-		
+	
 	dodge_direction = direction * dodge_strength
-	
 	animation_player.play("player/Dodge")
-	
 	velocity.x = dodge_direction.x
 	velocity.z = dodge_direction.z
 	is_sprinting = false
-	
 	await animation_player.animation_finished
-	
 	is_dodging = false
 
 func receive_attack(damage:float) -> void:
-	health -= damage
-	print("Recibiste daño, amigo. Vida restante:", health)
+	if not is_frozen:
+		health -= damage
+		print("Recibiste daño, amigo. Vida restante:", health)
 	
-	if is_takin_damage:
-		return
+		if is_takin_damage:
+			return
 		
-	is_takin_damage = true
-	animation_player.play("player/Damage")
-	await animation_player.animation_finished
-	is_takin_damage = false
+		is_takin_damage = true
+		animation_player.play("player/Damage")
+		await animation_player.animation_finished
+		is_takin_damage = false
 
 func start_aim() -> void: #Comenzar a apuntar
 	is_aiming = true
