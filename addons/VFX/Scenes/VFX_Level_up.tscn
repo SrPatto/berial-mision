@@ -230,7 +230,6 @@ _data = {
 }
 
 [node name="VFX_Level_UP" type="Node3D"]
-visible = false
 
 [node name="AuraCirce1" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_qwmg3")
@@ -268,6 +267,7 @@ draw_pass_1 = SubResource("QuadMesh_cy7bu")
 [node name="Glow" type="CPUParticles3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0.0403676, 0.832089, 0.133873)
 material_override = SubResource("ShaderMaterial_rgenr")
+emitting = false
 amount = 1
 one_shot = true
 explosiveness = 1.0
@@ -282,6 +282,7 @@ color_ramp = SubResource("Gradient_cteoc")
 [node name="LevelUP" type="CPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0574489, 2.63411, 0.133873)
 material_override = SubResource("StandardMaterial3D_q3pcb")
+emitting = false
 amount = 1
 one_shot = true
 explosiveness = 1.0

@@ -1,0 +1,134 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcs5ofc5qadex"]
+
+[ext_resource type="FontFile" uid="uid://bun2qosgr1yav" path="res://Assets/UI/Fonts/Swiss 721 Extended Bold.otf" id="1_lqryc"]
+[ext_resource type="Script" uid="uid://bt826ifjqwbtl" path="res://Scripts/UI/settings_menu.gd" id="1_vrd41"]
+[ext_resource type="PackedScene" uid="uid://bjjec78wmovf0" path="res://Scenes/UI/volume_slider.tscn" id="2_vrd41"]
+[ext_resource type="PackedScene" uid="uid://fyfnlcjeit0p" path="res://Scenes/UI/opt_btn_resolutions.tscn" id="3_ynxh7"]
+[ext_resource type="AudioStream" uid="uid://c65bsu2spn68c" path="res://Assets/SFX/UI/button-2.mp3" id="5_ynxh7"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vrd41")
+
+[node name="label_Title" type="Label" parent="."]
+custom_minimum_size = Vector2(800, 100)
+layout_mode = 2
+offset_left = 240.0
+offset_top = 17.0
+offset_right = 1040.0
+offset_bottom = 117.0
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 64
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 240.0
+offset_top = 110.0
+offset_right = -240.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Settings_Container" type="VBoxContainer" parent="Panel/VBoxContainer1"]
+custom_minimum_size = Vector2(700, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="label_Volume" type="Label" parent="Panel/VBoxContainer1/Settings_Container"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "Volume"
+vertical_alignment = 1
+
+[node name="Volume_Container" type="VBoxContainer" parent="Panel/VBoxContainer1/Settings_Container"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="volume_Master" type="Label" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "Master"
+vertical_alignment = 1
+
+[node name="VS_Master" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container" instance=ExtResource("2_vrd41")]
+layout_mode = 2
+bus_name = "Master"
+
+[node name="volume_Music" type="Label" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "Music"
+vertical_alignment = 1
+
+[node name="VS_Music" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container" instance=ExtResource("2_vrd41")]
+layout_mode = 2
+bus_name = "Music"
+
+[node name="volume_SFX" type="Label" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "SFX"
+vertical_alignment = 1
+
+[node name="VS_SFX" parent="Panel/VBoxContainer1/Settings_Container/Volume_Container" instance=ExtResource("2_vrd41")]
+layout_mode = 2
+bus_name = "SFX"
+
+[node name="label_Resolution" type="Label" parent="Panel/VBoxContainer1/Settings_Container"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "Resolution"
+vertical_alignment = 1
+
+[node name="OptBtn_Resolutions" parent="Panel/VBoxContainer1/Settings_Container" instance=ExtResource("3_ynxh7")]
+layout_mode = 2
+
+[node name="btn_Back" type="Button" parent="."]
+custom_minimum_size = Vector2(400, 60)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -90.0
+offset_right = 200.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_lqryc")
+theme_override_font_sizes/font_size = 32
+text = "BACK"
+
+[node name="btn_sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ynxh7")
+
+[connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]
