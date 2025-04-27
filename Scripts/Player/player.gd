@@ -225,16 +225,17 @@ func dodge() -> void:
 	is_dodging = false
 
 func receive_attack(damage:float) -> void:
-	health -= damage
-	print("Recibiste daño, amigo. Vida restante:", health)
+	if not is_frozen:
+		health -= damage
+		print("Recibiste daño, amigo. Vida restante:", health)
 	
-	if is_takin_damage:
-		return
+		if is_takin_damage:
+			return
 		
-	is_takin_damage = true
-	animation_player.play("player/Damage")
-	await animation_player.animation_finished
-	is_takin_damage = false
+		is_takin_damage = true
+		animation_player.play("player/Damage")
+		await animation_player.animation_finished
+		is_takin_damage = false
 
 func start_aim() -> void: #Comenzar a apuntar
 	is_aiming = true

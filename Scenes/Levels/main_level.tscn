@@ -745,6 +745,21 @@ points = PackedVector3Array(-0.542666, 0.00587029, -0.742029, -0.695602, 0.00196
 radius = 1.42969
 
 [node name="MainLevel" type="Node3D"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+rotation_edit_mode = 0
+rotation_order = 2
+top_level = false
+visible = true
+visibility_parent = NodePath("")
 script = ExtResource("1_5iftk")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
@@ -757,7 +772,22 @@ transform = Transform3D(0.476337, 0.0636101, 0.876959, -0.096666, 0.995122, -0.0
 shadow_enabled = true
 
 [node name="MontainsBackground" type="Node3D" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+rotation_edit_mode = 0
+rotation_order = 2
+top_level = false
+visible = true
+visibility_parent = NodePath("")
+script = null
 
 [node name="Icosphere_004" type="MeshInstance3D" parent="MontainsBackground"]
 transform = Transform3D(-10.0666, 0, 1.27742, 0, 10.1473, 0, -1.27742, 0, -10.0666, 101.458, 8.25677, -47.3168)
@@ -856,6 +886,22 @@ skeleton = NodePath("")
 navigation_mesh = ExtResource("2_5bh32")
 
 [node name="LIMITS" parent="NavigationRegion3D" instance=ExtResource("1_soxo8")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+rotation_edit_mode = 0
+rotation_order = 2
+top_level = false
+visible = true
+visibility_parent = NodePath("")
+script = null
 
 [node name="Floor" type="CSGCylinder3D" parent="NavigationRegion3D"]
 use_collision = true
@@ -865,6 +911,22 @@ radius = 100.0
 height = 1.0
 
 [node name="Objects" type="Node3D" parent="NavigationRegion3D"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+rotation_edit_mode = 0
+rotation_order = 2
+top_level = false
+visible = true
+visibility_parent = NodePath("")
+script = null
 
 [node name="Rock-1" type="MeshInstance3D" parent="NavigationRegion3D/Objects"]
 transform = Transform3D(-1.53014, 0, -5.80161, 0, 6, 0, 5.80161, 0, -1.53014, 54.9441, -0.206478, 15.6391)
